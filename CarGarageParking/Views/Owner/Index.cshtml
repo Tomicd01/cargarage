@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CarGarageParking.Models.Owner>
+@{
+	ViewData["Title"] = "Owner page";
+}
+
+<h1>Collection of owners</h1>
+
+<div>
+	@foreach(Owner owner in Model){
+		<div class="owner-card-look">
+			<h2>Name: @owner.FirstName</h2>
+			<h3>Last name: @owner.LastName</h3>
+			<p>Number of cars: @owner.Vehicles.Count()</p>
+			<a href="@Url.Action("Details", "Owner", new {id = owner.OwnerId})">More details about cars</a>
+		</div>
+	}
+</div>
+
+<style>
+	.owner-card-look{
+		border: 1px solid gray;
+		border-radius: 15px;
+		padding: 10px;
+		margin: 10px;
+		background-color: dodgerblue;
+		color: white;
+	}
+
+	.owner-card-look a {
+		color: yellow;
+		text-align: center;
+		text-decoration: none;
+	}
+
+	.owner-card-look a:hover {
+		color: white;
+		text-align: center;
+	}
+</style>
