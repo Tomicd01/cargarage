@@ -5,4 +5,10 @@
 
 <h1>@Model.FirstName @Model.LastName</h1>
 
+<ul>
+	@foreach(Vehicle vehicle in Model.Vehicles){
+		<li>@vehicle.LicensePlate</li>
+		<li>@vehicle.Owner</li>
+	}
+</ul>
 
