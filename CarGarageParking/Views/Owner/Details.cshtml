@@ -3,12 +3,49 @@
 	ViewData["Title"] = $"{Model.FirstName} {Model.LastName}";
 }
 
-<h1>@Model.FirstName @Model.LastName</h1>
+<div class="owner-look">
+	<h1>@Model.FirstName @Model.LastName</h1>
 
-<ul>
-	@foreach(Vehicle vehicle in Model.Vehicles){
-		<li>@vehicle.LicensePlate</li>
-		<li>@vehicle.Owner</li>
+	<ul class="vehicle-solo">
+		@foreach (Vehicle vehicle in Model.Vehicles)
+		{
+			<li>Vehicle: @vehicle.LicensePlate</li>
+		}
+	</ul>
+
+	<a href="@Url.Action("Index", "Owner")">Back to index</a>
+
+</div>
+
+
+<style>
+	.owner-look {
+		border: 1px solid gray;
+		border-radius: 15px;
+		padding: 10px;
+		margin: 10px;
+		background-color: dodgerblue;
+		color: white;
 	}
-</ul>
+	.owner-look a {
+		color: yellow;
+		text-align: center;
+		text-decoration: none;
+	}
 
+	.owner-look a:hover {
+		color: white;
+		text-align: center;
+	}
+	.vehicle-solo {
+		text-transform: uppercase;
+		text-decoration: none;
+		color: navajowhite;
+		text-align: center;
+	}
+	.vehicle-solo li {
+		margin: 10px;
+		max-width: 200px;
+		text-decoration: none;
+	}
+</style>
