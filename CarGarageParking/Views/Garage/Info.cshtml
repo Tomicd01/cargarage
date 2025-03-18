@@ -1,0 +1,29 @@
+﻿@model CarGarageParking.Models.Garage
+
+@{
+	ViewData["Title"] = $"{Model.Name} {Model.Location}";
+}
+
+<h2>@Model.Name @Model.Location</h2>
+
+<div>
+	<ul>
+		<li>Garazni broj: @Model.GarageId</li>
+		<li>Naziv: @Model.Name</li>
+		<li>Lokacija: @Model.Location</li>
+		<li>Kapacitet: @Model.Capacity</li>
+		<li>Broj zauzetih mesta popunjenosti: @Model.CurrentOccupancy</li>
+		<li>Broj trenutno slobodnih mesta: @Model.AvailableSpots</li>
+		<li>Procenat popunjenosti: @Math.Ceiling(Model.CurrentOccupancy / (double)Model.Capacity * 100)%</li>
+		@if (Model.IsFull == true)
+		{
+			<li>Garaza je puna</li>
+		}
+		else
+		{
+			<li>Garaza nije puna</li>
+		}
+	</ul>
+</div>
+
+<a href="@Url.Action("Index", "Garage")">Return to all garages</a>

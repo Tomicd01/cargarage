@@ -2,7 +2,7 @@
 {
     public class Garage
     {
-        public int Id { get; set; }
+        public int GarageId { get; set; }
         public string Name { get; set; }
 
         public string Location { get; set; }
@@ -25,7 +25,7 @@
         {
             get 
             {
-                return CurrentOccupancy >=+ Capacity;
+                return CurrentOccupancy >= Capacity;
             }
         }
 

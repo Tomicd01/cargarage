@@ -3,6 +3,19 @@
 	ViewData["Title"] = "Owner page";
 }
 
+<form asp-controller="Owner" asp-action="Index" method="get">
+	<label for="FirstName">First name: </label>
+	<input type="text" name="FirstName" id="FirstName" value="@Context.Request.Query["FirstName"]" />
+
+	<label for="LastName">Last name: </label>
+	<input type="text" name="LastName" id="LastName" value="@Context.Request.Query["LastName"]" />
+	
+	<label for="numberOfCars">Number of cars: </label>
+	<input type="number" step="1" min="0" name="numberOfCars" id="numberOfCars" value="@Context.Request.Query["numberOfCars"]" />
+		
+	<button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 <h1>Collection of owners</h1>
 
 <div>

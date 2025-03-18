@@ -1,5 +1,49 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<CarGarageParking.Models.Garage>
+
 @{
+	ViewData["Title"] = "Garage";
 }
+
+<form asp-controller="Garage" asp-action="Index" method="get">
+	<label for="Name">Name: </label>
+	<input type="text" name="Name" id="Name" value="@Context.Request.Query["Name"]" />
+
+	<label for="Location">Location: </label>
+	<input type="text" name="Location" id="Location" value="@Context.Request.Query["Location"]" />
+
+	<label for="AvailableSpots">Sort by spots available: </label>
+	<input type="number" step="1" min="0" name="AvailableSpots" id="AvailableSpots" value="@Context.Request.Query["AvailableSpots"]" />
+
+	<button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+
+<div class="garage-list">
+	@foreach (Garage garage in Model)
+	{
+		<div class="garage-solo">
+			<h2>Naziv garaze: @garage.Name</h2>
+			<h3>Broj slobodnih mesta: @garage.AvailableSpots</h3>
+			<h3>Procenat popunjenosti: @Math.Ceiling(garage.CurrentOccupancy / (double)garage.Capacity * 100)% </h3>
+			@if(garage.IsFull == true){
+				<h3>Garaza je puna</h3>
+			}else{
+				<h3>Garaza nije puna</h3>
+			}
+			<a href="@Url.Action("Info", "Garage", new { id = garage.GarageId})">View more info</a>
+			<hr />
+		</div>
+	}
+</div>
+
+<style>
+	hr{
+		color: darkred;
+	}
+	.garage-solo{
+		background-color: burlywood;
+		padding: 10px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+	}
+</style>
