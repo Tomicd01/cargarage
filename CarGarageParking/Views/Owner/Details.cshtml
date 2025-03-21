@@ -5,11 +5,12 @@
 
 <div class="owner-look">
 	<h1>@Model.FirstName @Model.LastName</h1>
+	<h1>Number of cars: @Model.Vehicles.Count()</h1>
 
 	<ul class="vehicle-solo">
 		@foreach (Vehicle vehicle in Model.Vehicles)
 		{
-			<li>Vehicle: @vehicle.LicensePlate</li>
+			<li>Vehicle: @await Html.PartialAsync("_VehicleCard", vehicle)</li>
 		}
 	</ul>
 

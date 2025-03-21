@@ -5,9 +5,16 @@ namespace CarGarageParking.Controllers
 {
     public class GarageController : Controller
     {
+        private readonly CarGarageParkingDbContext _context;
+
+        public GarageController(CarGarageParkingDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index(string name, string location, int? AvailableSpots)
         {
-            IEnumerable<Garage> garages = ShowAllGarages();
+            IEnumerable<Garage> garages = _context.Garages;
             if (name != null)
             {
                 garages = garages.Where(g => g.Name.Trim().ToLower() == name.Trim().ToLower());
@@ -26,31 +33,10 @@ namespace CarGarageParking.Controllers
 
         public  IActionResult Info(int id)
         {
-           Garage garage = ShowAllGarages().FirstOrDefault(g => g.GarageId == id);
+           Garage garage = _context.Garages.FirstOrDefault(g => g.GarageId == id);
            return View(garage);
         }
 
-        private IEnumerable<Garage> ShowAllGarages()
-        {
-            List<Garage> ListOfGarages = new List<Garage>();
-            Garage g1 = new Garage();
-            g1.GarageId = 1;
-            g1.Name = "Resaska";
-            g1.Location = "Resavska 23";
-            g1.Capacity = 600;
-            g1.CurrentOccupancy = 80;
-            ListOfGarages.Add(g1);
-
-            Garage g2 = new Garage();
-            g2.GarageId = 2;
-            g2.Name = "Vukov spomenik";
-            g2.Location = "Bulevar kralja Aleksandra 78";
-            g2.Capacity = 400;
-            g2.CurrentOccupancy = 250;
-            ListOfGarages.Add(g2);
-
-            return ListOfGarages;
-        } 
     }
 }
 

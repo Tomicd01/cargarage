@@ -28,7 +28,7 @@ namespace CarGarageParking.Models
             }
         }
 
-        public ICollection<VehicleInGarage> VehiclesInGarage { get; set; } = new List<VehicleInGarage>();
+        public ICollection<VehicleInGarage> VehicleInGarage { get; set; } = new List<VehicleInGarage>();
 
         public bool IsFull
         {

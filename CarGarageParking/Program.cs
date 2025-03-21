@@ -1,7 +1,12 @@
+using CarGarageParking;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<CarGarageParkingDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CarGarage")));
 
 var app = builder.Build();
 
