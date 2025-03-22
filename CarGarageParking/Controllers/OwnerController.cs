@@ -1,4 +1,5 @@
 ﻿using CarGarageParking.Models;
+using CarGarageParking.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,14 +7,27 @@ namespace CarGarageParking.Controllers
 {
     public class OwnerController : Controller
     {
-        private readonly CarGarageParkingDbContext _context;
-        public OwnerController(CarGarageParkingDbContext context) 
+        //private readonly CarGarageParkingDbContext _context;
+        //public OwnerController(CarGarageParkingDbContext context) 
+        //{
+        //    _context = context;
+        //}
+        //private readonly IOwnerService _ownerService;
+        //private readonly IVehicleService _vehicleService;
+        //public OwnerController(IOwnerService ownerService, IVehicleService vehicleService)
+        //{
+        //    _ownerService = ownerService;
+        //    _vehicleService = vehicleService;
+        //}
+        private readonly IUnitOfWork _unitOfWork;
+        public OwnerController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
+
         public IActionResult Index(string firstName, string lastName, int? numberOfCars)
         {
-            var owners = _context.Owners.Include(o => o.Vehicles).AsQueryable();
+            var owners = _unitOfWork.OwnerService.GetAllOwnersWithVehicles();
 
             if (firstName != null)
             {
@@ -34,8 +48,8 @@ namespace CarGarageParking.Controllers
 
         public IActionResult Details(int id)
         {
-            Owner singleOwner = _context.Owners.Find(id);
-            singleOwner.Vehicles = _context.Vehicles.Where(v => v.OwnerId == id).ToList();
+            Owner singleOwner = _unitOfWork.OwnerService.GetOwnerById(id);
+            singleOwner.Vehicles = _unitOfWork.VehicleService.GetVehicleByCondition(v => v.OwnerId == id).ToList();
 
             return View(singleOwner);
         }

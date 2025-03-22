@@ -1,4 +1,5 @@
 using CarGarageParking;
+using CarGarageParking.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CarGarageParkingDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CarGarage")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CarGarage"))
+    .EnableSensitiveDataLogging().LogTo(Console.WriteLine, LogLevel.Information));
+builder.Services.AddScoped<IOwnerService, OwnerService>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IGarageService, GarageService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

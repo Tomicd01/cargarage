@@ -1,0 +1,36 @@
+﻿@model CarGarageParking.Models.Garage;
+
+@{
+	ViewData["Title"] = "Create garage";
+}
+
+<h2>Create a new garage</h2>
+
+<form asp-action="Create" asp-controller="Garage" method="post">
+	<div class="form-group">
+		<label asp-for="Name" class="form-label">Name</label>
+		<input type="text" asp-for="Name" class="form-control" required/>
+		<span asp-validation-for="Name"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Location" class="form-label">Location</label>
+		<input type="text" asp-for="Location" class="form-control" required/>
+		<span asp-validation-for="Location"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Capacity" class="form-label">Capacity</label>
+		<input type="number" step="10" asp-for="Capacity" class="form-control" />
+		<span asp-validation-for="Capacity"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="CurrentOccupancy" class="form-label">Current Occupancy</label>
+		<input type="text" asp-for="CurrentOccupancy" class="form-control" />
+		<span asp-validation-for="CurrentOccupancy"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Name" class="form-label">Name</label>
+		<input type="text" asp-for="Name" class="form-control" />
+		<span asp-validation-for="Name"></span>
+	</div>
+
+</form>

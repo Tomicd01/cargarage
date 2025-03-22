@@ -1,20 +1,21 @@
 ﻿using CarGarageParking.Models;
+using CarGarageParking.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarGarageParking.Controllers
 {
     public class GarageController : Controller
     {
-        private readonly CarGarageParkingDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GarageController(CarGarageParkingDbContext context)
+        public GarageController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index(string name, string location, int? AvailableSpots)
         {
-            IEnumerable<Garage> garages = _context.Garages;
+            IEnumerable<Garage> garages = _unitOfWork.GarageService.GetAllgarages();
             if (name != null)
             {
                 garages = garages.Where(g => g.Name.Trim().ToLower() == name.Trim().ToLower());
@@ -33,8 +34,27 @@ namespace CarGarageParking.Controllers
 
         public  IActionResult Info(int id)
         {
-           Garage garage = _context.Garages.FirstOrDefault(g => g.GarageId == id);
+           Garage garage = _unitOfWork.GarageService.GetGarageById(id);
            return View(garage);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Garage garage)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.GarageService.CreateGarage(garage);
+                _unitOfWork.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(garage);
         }
 
     }

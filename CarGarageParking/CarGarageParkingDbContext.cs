@@ -5,6 +5,10 @@ namespace CarGarageParking
 {
     public class CarGarageParkingDbContext : DbContext
     {
+        public static ILoggerFactory loggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => 
+        { 
+            builder.AddConsole();
+        });
         public CarGarageParkingDbContext(DbContextOptions<CarGarageParkingDbContext> options) : base(options)
         {
 
