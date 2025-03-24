@@ -31,10 +31,16 @@ namespace CarGarageParking.Controllers
                 garages = garages.Where(g => g.AvailableSpots >= AvailableSpots);
             }
 
-            var pageSize = 2;
+            int pageSize = 2;
+            PaginationViewModel pgvm = new PaginationViewModel();
+            pgvm.PageSize = pageSize;
+            pgvm.TotalCount = garages.Count();
+            pgvm.CurrentPage = page;
+            
             garages = garages.Skip(pageSize * (page - 1)).Take(pageSize);
+            pgvm.Garages = garages;
 
-            return View(garages);
+            return View(pgvm);
         }
 
         public  IActionResult Info(int id)
