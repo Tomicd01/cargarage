@@ -22,33 +22,53 @@
 <div class="garage-list">
 	@foreach (Garage garage in Model)
 	{
-			<div class="card" style="width: 18rem;">
-			<img src="https://images.adsttc.com/media/images/63a1/325b/a452/0847/f9e1/b8eb/large_jpg/a-brief-history-of-parking-garage-design_1.jpg?1671508577" class="card-img-top" alt="...">
-				<div class="card-body">
-					<h5 class="card-title">Naziv garaze: @garage.Name</h5>
-					<h5>Broj slobodnih mesta: @garage.AvailableSpots</h5>
-					<h3>Procenat popunjenosti: @Math.Ceiling(garage.CurrentOccupancy / (double)garage.Capacity * 100)% </h3>
-					@if (garage.IsFull == true)
-					{
-						<h3 class="text-danger">Garaza je puna</h3>
-					}
-					else
-					{
-						<h3>Garaza nije puna</h3>
-					}
-					<a href="@Url.Action("Info", "Garage", new { id = garage.GarageId})" class="btn btn-primary">View more info</a>
-				</div>
+		<div class="card mb-3">
+			<div class="image"></div>
+			<div class="card-body">
+				<h5 class="card-title">Naziv garaze: @garage.Name</h5>
+				<p class="card-text mb-0">Broj slobodnih mesta: @garage.AvailableSpots</p>
+				<p class="card-text mb-0">Procenat popunjenosti: @Math.Floor(garage.CurrentOccupancy / (double)garage.Capacity * 100)% </p>
+				@if (garage.IsFull == true)
+				{
+					<h3 class="text-danger">Garaza je puna</h3>
+				}
+				else
+				{
+					<h3>Garaza nije puna</h3>
+				}
+				<p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+				<a href="@Url.Action("Info", "Garage", new { id = garage.GarageId})" class="btn btn-primary">View more info</a>
+				<a href="@Url.Action("Edit", "Garage", new { id = garage.GarageId})" class="btn btn-success">Edit garage</a>
 			</div>
+		</div>
 	}
 </div>
 
+@{
+	int currentPage = 1;
+	if(int.TryParse(Context.Request.Query["page"], out int page)){
+		currentPage = page;
+	}
+}
+@if (currentPage > 1){
+	<a href="@Url.Action("Index", "Garage", new { page =  currentPage - 1})" class="btn btn-secondary">Previous</a>
+}
+
+<a href="@Url.Action("Index", "Garage", new { page =  currentPage + 1})" class="btn btn-primary">Next</a>
+
 <style>
 	.garage-list{
-		display: flex;
-		flex: row;
 		padding: 10px;
 		border-radius: 10px;
 		margin-bottom: 15px;
+	}
+	.image{
+		background-image: url("https://i0.wp.com/pdxshoupistas.com/wp-content/uploads/2018/01/leed_garage.jpg?ssl=1");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+		width: 100%;
+		height: 150px;
 	}
 	.card{
 		margin: 20px;

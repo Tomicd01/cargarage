@@ -1,10 +1,10 @@
-﻿@model CarGarageParking.Models.Garage
+﻿@model CarGarageParking.Models.Garage;
 
 @{
-	ViewData["Title"] = $"{Model.Name} {Model.Location}";
+	ViewData["Title"] = "Delete garage";
 }
 
-<h2>@Model.Name @Model.Location</h2>
+<h1>Delete a garage</h1>
 
 <div>
 	<ul>
@@ -26,5 +26,11 @@
 	</ul>
 </div>
 
-<a href="@Url.Action("Index", "Garage")" class="btn btn-primary">Return to all garages</a>
-<a href="@Url.Action("Delete", "Garage", new { id = Model.GarageId})" class="btn btn-danger">Delete garage</a>
+<form asp-action="DeleteConfirmed" asp-controller="Garage" method="post">
+	<input type="hidden" asp-for="GarageId" />
+
+	<button type="submit" class="btn btn-danger">Delete garage</button>
+	<a href="@Url.Action("Index", "Garage")" class="btn btn-primary">Return to all garages</a>
+</form>
+
+
