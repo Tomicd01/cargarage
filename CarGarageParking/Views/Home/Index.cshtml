@@ -1,8 +1,34 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home Garage Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Car Garage parking</h1>
+<p>The place where you will always find free spot.</p>
+
+<div class="button-container">
+    <a href="@Url.Action("EnterVehicle", "Home")" class="btn btn-primary"><span>Enter Vehicle</span></a>
+    <a href="@Url.Action("ExitVehicle", "Home")" class="btn btn-secondary"><span>Exit Vehicle</span></a>
+    <a href="@Url.Action("RegisterUser", "Home")" class="btn btn-success"><span>Become a user</span></a>
 </div>
+
+<style>
+    .button-container{
+        margin: 50px auto;
+    }
+
+    .btn{
+        padding: 5px 15px;
+        margin: 10px;
+        text-decoration: none;
+        transform: skew(-20deg);
+    }
+    span{
+        display: inline-block;
+        transform: skew(20deg);
+    }
+
+    .btn-primary{
+
+    }
+</style>
+
