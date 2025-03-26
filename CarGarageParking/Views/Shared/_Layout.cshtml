@@ -21,6 +21,11 @@
             color: #d6d6d6 !important;
         }
 
+        .enter-vehicle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -55,7 +60,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="@(ViewData["Title"]?.ToString() == "Find a Garage" ? "enter-vehicle" : "")">
             @RenderBody()
         </main>
     </div>
