@@ -4,6 +4,18 @@
 	ViewData["Title"] = "Available garages";
 }
 
+
+@if(ViewBag.SuccessMessage != null)
+{
+	<div class="alert alert-success">@ViewBag.SuccessMessage .Garage entered at @DateTime.Now</div>	
+}
+@if (ViewBag.ErrorMessage != null)
+{
+	<div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
+<h3>Current time: <span id="currentTime"></span></h3>
+
 <div class="garage-list">
 	@foreach (Garage garage in Model)
 	{
@@ -88,4 +100,16 @@
 	.buttons {
 		margin-bottom: 15px;
 	}
+	h3{
+		color: white;
+	}
 </style>
+<script>
+	function Time(){
+		var now = new Date();
+
+		document.getElementById("currentTime").innerText = now.toLocaleTimeString();
+	}
+	setInterval(Time, 1000);
+	Time();
+</script>

@@ -27,9 +27,9 @@ namespace CarGarageParking.Models
         [Range(0.01, double.MaxValue, ErrorMessage = "Hourly rate must be greater than 0.")]
         public decimal HourlyRate { get; set; }
 
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
 
-        public Owner Owner { get; set; }
+        public Owner? Owner { get; set; }
 
         public bool IsVehicleStillInGarage { get; set; } = true;
     }

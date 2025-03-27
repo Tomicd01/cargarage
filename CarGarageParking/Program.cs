@@ -12,6 +12,7 @@ builder.Services.AddDbContext<CarGarageParkingDbContext>(options =>
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IGarageService, GarageService>();
+builder.Services.AddScoped<IVehicleInGarageService, VehicleInGarageService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();

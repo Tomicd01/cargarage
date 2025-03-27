@@ -32,8 +32,7 @@ namespace CarGarageParking.Services
 
         public Garage GetGarageById(int id)
         {
-            Garage garage = _context.Garages.Find(id);
-            return garage;
+            return _context.Garages.Find(id);
         }
 
         public void UpdateGarage(Garage garage)

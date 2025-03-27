@@ -1,0 +1,52 @@
+﻿@model CarGarageParking.Models.EnterVehicleModel;
+
+@{
+	ViewData["Title"] = "Enter Vehicle Details";
+}
+
+<div class="garage-info">
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item">Garage name: <strong>@Model.GarageName</strong></li>
+		<li class="list-group-item">Garage location: <strong>@Model.GarageLocation</strong></li>
+	</ul>
+</div>
+
+<form asp-action="ConfirmVehicleEntry" asp-controller="Home" method="post">
+	<input type="hidden" asp-for="GarageId" value="@Model.GarageId"/>
+	<div class="form-group">
+		<label asp-for="LicensePlate">Enter a license plate</label>
+		<input type="text" asp-for="LicensePlate" class="form-control" maxlength="12" required/>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Submit</button>
+	<a href="@Url.Action("Index", "Home")" class="btn btn-danger">Cancel</a>
+</form>
+
+<style>
+	.garage-info{
+		border: 1px solid white;
+		padding: 10px;
+		width: 30%;
+	}
+	.list-group-item{
+		background-color: transparent;
+		color: white;
+		border: 1px solid white;
+	}
+	label{
+		color: white;
+	}
+	form{
+		width: 30%
+	}
+</style>
+
+<script>
+	function Time(){
+		var now = new Date();
+
+		document.getElementById("currentTime").innerText = now.toLocaleTimeString();
+	}
+	setInterval(Time, 1000);
+	Time();
+</script>

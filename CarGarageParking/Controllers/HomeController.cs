@@ -46,27 +46,58 @@ namespace CarGarageParking.Controllers
         public IActionResult EnterVehicleDetails(int id)
         {
             Garage garage = _unitOfWork.GarageService.GetGarageById(id);
-
+      
             if(id == null)
             {
                 return NotFound();
             }
 
-            EnterVehicleModel evm = new EnterVehicleModel
+            EnterVehicleModel evm = new EnterVehicleModel();
+            evm.GarageId = garage.GarageId;
+            evm.GarageName = garage.Name;
+            evm.GarageLocation = garage.Location;
+
+            Console.WriteLine(evm.GarageName);
+
+            return View(evm);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmVehicleEntry(int garageId, string licensePlate)
+        {
+            var existingVehicle = _unitOfWork.VehicleInGarageService.GetAllVehiclesInGarage().FirstOrDefault(v => v.Vehicle.LicensePlate == licensePlate && v.IsVehicleStillInGarage);
+            
+            if (existingVehicle != null)
             {
-                GarageId = garage.GarageId,
-                GarageName = garage.Name,
-                GarageLocation = garage.Location,
+                ViewBag.ErrorMessage = "Vehicle is already in the garage!";
+                return View("GarageResult", _unitOfWork.GarageService.GetAllgarages());
+            }
+
+            Garage garage = _unitOfWork.GarageService.GetGarageById(garageId);
+            if (garage == null || garage.IsFull)
+            {
+                ViewBag.ErrorMessage = "Garage is either full or not found!";
+                return View("GarageResult", _unitOfWork.GarageService.GetAllgarages());
+            }
+            VehicleInGarage vig = new VehicleInGarage
+            {
+                GarageId = garageId,
+                Vehicle = new Vehicle
+                {
+                    LicensePlate = licensePlate
+                },
+                EntryTime = DateTime.Now,
+                HourlyRate = 25,
             };
 
-            return View();
+            garage.CurrentOccupancy++;
+            _unitOfWork.VehicleInGarageService.Create(vig);
+
+            ViewBag.SuccessMessage = $"Vehicle with license plate number: {licensePlate}, successfully entered the garage {garage.Name}!";
+
+            return View("GarageResult", _unitOfWork.GarageService.GetAllgarages());
         }
 
-        [HttpGet]
-        public IActionResult GarageResult(IEnumerable<Garage> garages)
-        {
-            return View();
-        }
 
         [HttpGet]
         public IActionResult ExitVehicle()
