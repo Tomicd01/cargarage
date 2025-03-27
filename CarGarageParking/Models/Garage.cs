@@ -20,6 +20,8 @@ namespace CarGarageParking.Models
         [IntTypeGreaterThan("Capacity", ErrorMessage = "Capacity must be greater than occupancy.")]
         public int CurrentOccupancy { get; set; }
 
+        public DateTime? LastEntryTime { get; set; }
+
         public int AvailableSpots
         {
             get

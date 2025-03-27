@@ -89,7 +89,7 @@ namespace CarGarageParking.Controllers
                 EntryTime = DateTime.Now,
                 HourlyRate = 25,
             };
-
+            garage.LastEntryTime = DateTime.Now;
             garage.CurrentOccupancy++;
             _unitOfWork.VehicleInGarageService.Create(vig);
 
