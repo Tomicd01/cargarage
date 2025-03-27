@@ -1,4 +1,4 @@
-﻿namespace CarGarageParking.Models
+﻿namespace CarGarageParking.Models.ViewModel
 {
     public class EnterVehicleModel
     {

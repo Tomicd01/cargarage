@@ -2,33 +2,42 @@
     ViewData["Title"] = "Home Garage Page";
 }
 
-<h1>Car Garage parking</h1>
-<p>The place where you will always find free spot.</p>
+<div class="content">
+    <div class="heading">
+        <h1><strong>Car Garage parking</strong></h1>
+        <h5>The place where you will always find free spot.</h5>
+    </div>
 
-<div class="button-container">
-    <a href="@Url.Action("EnterVehicle", "Home")" class="btn btn-primary"><span>Enter Vehicle</span></a>
-    <a href="@Url.Action("ExitVehicle", "Home")" class="btn btn-secondary"><span>Exit Vehicle</span></a>
-    <a href="@Url.Action("RegisterUser", "Home")" class="btn btn-success"><span>Become a user</span></a>
+    <div class="button-container">
+        <a href="@Url.Action("EnterVehicle", "Home")" class="btn btn-primary btn-lg"><span><i class="bi bi-car-front-fill"></i> Enter Vehicle</span></a>
+        <a href="@Url.Action("ExitVehicle", "Home")" class="btn btn-danger btn-lg"><span><i class="bi bi-box-arrow-left"></i> Exit Vehicle</span></a>
+        <a href="@Url.Action("RegisterUser", "Home")" class="btn btn-success btn-lg"><span><i class="bi bi-person-fill"></i> Become a user</span></a>
+    </div>
+
 </div>
-
 <style>
-    .button-container{
-        margin: 50px auto;
-    }
-
-    .btn{
-        padding: 5px 15px;
-        margin: 10px;
-        text-decoration: none;
-        transform: skew(-20deg);
-    }
-    span{
-        display: inline-block;
-        transform: skew(20deg);
-    }
-
-    .btn-primary{
-
-    }
+.button-container{
+    margin: 20px 0px;
+}
+.btn{
+    padding: 5px 15px;
+    margin: 10px;
+    text-decoration: none;
+    transform: skew(-20deg);
+}
+span{
+    display: inline-block;
+    transform: skew(20deg);
+}
+.heading{
+    color: white;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 50%;
+}
 </style>
 

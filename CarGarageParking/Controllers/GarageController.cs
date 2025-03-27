@@ -1,4 +1,5 @@
 ﻿using CarGarageParking.Models;
+using CarGarageParking.Models.ViewModel;
 using CarGarageParking.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,13 +33,13 @@ namespace CarGarageParking.Controllers
             }
 
             int pageSize = 2;
-            PaginationViewModel pgvm = new PaginationViewModel();
+            PaginationViewModel<Garage> pgvm = new PaginationViewModel<Garage>();
             pgvm.PageSize = pageSize;
             pgvm.TotalCount = garages.Count();
             pgvm.CurrentPage = page;
             
             garages = garages.Skip(pageSize * (page - 1)).Take(pageSize);
-            pgvm.Garages = garages;
+            pgvm.Colection = garages;
 
             return View(pgvm);
         }
