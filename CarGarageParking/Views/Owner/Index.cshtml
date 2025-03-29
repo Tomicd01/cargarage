@@ -18,13 +18,16 @@
 
 <h1>Collection of owners</h1>
 
-<div>
+<div class="owners-list">
 	@foreach(Owner owner in Model){
 		@await Html.PartialAsync("_OwnerCard", owner);
 	}
 </div>
 
 <style>
+	.owners-list{
+		width: 50%;
+	}
 	.owner-card-look{
 		border: 1px solid gray;
 		border-radius: 15px;

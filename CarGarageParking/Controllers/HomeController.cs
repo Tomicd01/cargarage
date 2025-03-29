@@ -25,22 +25,38 @@ namespace CarGarageParking.Controllers
             return View();
         }
 
-        public IActionResult SearchAGarage(string? search)
+        public IActionResult SearchAGarage(string? search, int page = 1)
         {
             IEnumerable<Garage> garages = _unitOfWork.GarageService.GetAllgarages();
 
-            var result = search.Trim().ToLower();
-
             if(search != null)
             {
-                garages = garages.Where(g => g.Name.ToLower().Contains(result) || g.Location.ToLower().Contains(result));
+                garages = garages.Where(g => g.Name.ToLower().Contains(search.Trim().ToLower()) || g.Location.ToLower().Contains(search.Trim().ToLower()));
             }
             else
             {
-                return NotFound(); 
-            }
+                var pageSize1 = 2;
+                PaginationViewModel<Garage> pgvm1 = new PaginationViewModel<Garage>();
+                pgvm1.TotalCount = garages.Count();
+                pgvm1.CurrentPage = page;
+                pgvm1.PageSize = 2;
+                garages = garages.Skip(pageSize1 * (page - 1)).Take(pageSize1);
+                pgvm1.Colection = garages;
 
-            return View("GarageResult", garages);
+
+                return View("GarageResult", pgvm1);
+            }
+ 
+            var pageSize = 2;
+            PaginationViewModel<Garage> pgvm = new PaginationViewModel<Garage>();
+            pgvm.TotalCount = garages.Count();
+            pgvm.CurrentPage = page;
+            pgvm.PageSize = 2;
+            garages = garages.Skip(pageSize * (page - 1)).Take(pageSize);
+            pgvm.Colection = garages;
+
+
+            return View("GarageResult", pgvm);
         }
 
         [HttpGet]
@@ -71,14 +87,34 @@ namespace CarGarageParking.Controllers
             if (existingVehicle != null)
             {
                 ViewBag.ErrorMessage = "Vehicle is already in the garage!";
-                return View("GarageResult", _unitOfWork.GarageService.GetAllgarages());
+                var garages = _unitOfWork.GarageService.GetAllgarages();
+                var pageSize = 2;
+                PaginationViewModel<Garage> pgvm = new PaginationViewModel<Garage>()
+                {
+                    TotalCount = garages.Count(),
+                    PageSize = pageSize,
+                    CurrentPage = 1,
+                    Colection = garages.Take(pageSize)
+                };
+
+                return View("GarageResult", pgvm);
             }
 
             Garage garage = _unitOfWork.GarageService.GetGarageById(garageId);
             if (garage == null || garage.IsFull)
             {
                 ViewBag.ErrorMessage = "Garage is either full or not found!";
-                return View("GarageResult", _unitOfWork.GarageService.GetAllgarages());
+                var garages = _unitOfWork.GarageService.GetAllgarages();
+                var pageSize = 2;
+                PaginationViewModel<Garage> pgvm = new PaginationViewModel<Garage>()
+                {
+                    TotalCount = garages.Count(),
+                    PageSize = pageSize,
+                    CurrentPage = 1,
+                    Colection = garages.Take(pageSize)
+                };
+
+                return View("GarageResult", pgvm);
             }
             VehicleInGarage vig = new VehicleInGarage
             {
@@ -90,13 +126,24 @@ namespace CarGarageParking.Controllers
                 EntryTime = DateTime.Now,
                 HourlyRate = 25,
             };
+
             garage.LastEntryTime = DateTime.Now;
             garage.CurrentOccupancy++;
             _unitOfWork.VehicleInGarageService.Create(vig);
 
             ViewBag.SuccessMessage = $"Vehicle with license plate number: {licensePlate}, successfully entered the garage {garage.Name}!";
+            var garagesAfterEntry = _unitOfWork.GarageService.GetAllgarages();
 
-            return View("GarageResult", _unitOfWork.GarageService.GetAllgarages());
+            var pgvmFinal = new PaginationViewModel<Garage>
+            {
+                TotalCount = garagesAfterEntry.Count(),
+                CurrentPage = 1,
+                PageSize = 2,
+                Colection = garagesAfterEntry.Take(2).ToList()
+            };
+            
+
+            return View("GarageResult", pgvmFinal);
         }
 
 

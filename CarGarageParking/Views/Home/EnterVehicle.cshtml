@@ -2,17 +2,17 @@
 	ViewData["Title"] = "Find a Garage";
 }
 
-<h1>Find a specific or local garage</h1>
+<h1><strong>Find a specific or local garage</strong></h1>
 
 <form asp-action="SearchAGarage" asp-controller="Home" method="get" class="form-search">
 	<div class="form-group">
-		<label for="search" class="form-label">Enter a garage name or location</label>
+		<label for="search" class="form-label"><strong>Enter a garage name or location</strong></label>
 		<input type="text" id="search" name="search" class="form-control" placeholder="Search" required />
-	</div>
 
-	<div class="buttons">
-		<button type="submit" class="btn btn-primary">Search</button>
-		<a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back</a>
+		<div class="buttons">
+			<button type="submit" class="btn btn-primary button">Search</button>
+			<a href="@Url.Action("Index", "Home")" class="btn btn-secondary button2">Back</a>
+		</div>
 	</div>
 </form>
 
@@ -20,6 +20,11 @@
 	h1{
 		margin-top: 50px;
 		color: white;
+	}
+	form{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 	}
 	.form-search{
 		margin-bottom: 15px;
@@ -32,7 +37,7 @@
 	.form-group{
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-start;
 		margin-bottom: 15px;
 		width: 70%;
 	}
@@ -41,22 +46,37 @@
 	}
 	input{
 		background-color: transparent !important;
-		width: 50%;
-		height: 50px;
-		border-radius: 15px;
+		width: 100%;
+		max-width: 350px;
+		padding: 10px;
+		border-radius: 20px;
+		border: 1px solid #ccc;
+		transition: all 0.3s ease;
 		color: white !important;
+	}
+
+	input:focus {
+		outline: none;
+		background-color: transparent;
+		box-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
 	}
 	input::placeholder{
 		color: darkgray;
 	}
 	.buttons{
 		display: flex;
-		justify-content: center;
-		word-spacing: 10px;
-		width: 80%;	
+		justify-content: flex-start;
+		width: 100%;	
+		margin-top: 15px;
 	}
 	.btn{
 		width: 120px;
 	}
+	.button{
+		margin-right: 5px;
+	}
 
+	.button2 {
+		margin-left: 5px;
+	}
 </style>

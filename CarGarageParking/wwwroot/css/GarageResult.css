@@ -1,0 +1,46 @@
+﻿.garage-list {
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert {
+    width: 50%;
+}
+
+.image {
+    background-image: url("https://i0.wp.com/pdxshoupistas.com/wp-content/uploads/2018/01/leed_garage.jpg?ssl=1");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 150px;
+}
+
+.card {
+    width: 80%;
+    margin: 20px;
+}
+
+.card {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    width: 50%;
+}
+
+hr {
+    color: white;
+}
+
+.buttons {
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: white;
+}

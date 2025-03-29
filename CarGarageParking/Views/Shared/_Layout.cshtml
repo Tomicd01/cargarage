@@ -8,37 +8,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CarGarageParking.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        html{
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
-        body{
-            background: rgb(2,0,36);
-            background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 38%, rgba(132,0,255,1) 100%);
-            height: 100% !important;
-            margin-bottom: 0px !important;
-        }
-        main{
-            height: 100%;
-            padding-left: 10%;
-            padding-right: 10%;
-        }
-        #navbar {
-            background: rgb(2,0,36);
-            background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 38%, rgba(132,0,255,1) 100%);
-            border: none;
-            margin-bottom: 0px !important;
-        }
-        .container-fluid a{
-            color: #d6d6d6 !important;
-        }
-        .enter-vehicle {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-    </style>
 </head>
 <body>
     <header>
@@ -72,16 +41,18 @@
         </nav>
     </header>
 
-    <main role="main" class="enter-vehicle">
-        @RenderBody()
-    </main>
-
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - CarGarageParking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container text-center">
+            &copy; @DateTime.Now.Year - MyApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

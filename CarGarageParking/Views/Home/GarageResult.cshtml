@@ -1,4 +1,8 @@
-﻿@model IEnumerable<CarGarageParking.Models.Garage>	
+﻿@model CarGarageParking.Models.ViewModel.IPaginationViewModel<Garage>
+
+<head>
+	<link rel="stylesheet" href="~/css/GarageResult.css" />
+</head>
 
 @{
 	ViewData["Title"] = "Available garages";
@@ -17,7 +21,7 @@
 <h3>Current time: <span id="currentTime"></span></h3>
 
 <div class="garage-list">
-	@foreach (Garage garage in Model)
+	@foreach (Garage garage in Model.Colection)
 	{
 		<div class="card mb-3">
 			<div class="image"></div>
@@ -58,46 +62,10 @@
 	<a href="@Url.Action("EnterVehicle", "Home")" class="btn btn-warning">Search for another garage</a>
 </div>
 
+<div class="navigation">
+	@await Html.PartialAsync("_PaginationViewSearchAGarage", Model)
+</div>
 
-<style>
-	.garage-list {
-		padding: 10px;
-		border-radius: 10px;
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.image {
-		background-image: url("https://i0.wp.com/pdxshoupistas.com/wp-content/uploads/2018/01/leed_garage.jpg?ssl=1");
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: cover;
-		width: 100%;
-		height: 150px;
-	}
-
-	.card {
-		margin: 20px;
-	}
-	.card{
-		background-color: transparent;
-		border: 1px solid white;
-		color: white;
-		width: 50%;
-	}
-	hr {
-		color: white;
-	}
-
-	.buttons {
-		margin-bottom: 15px;
-	}
-	h3{
-		color: white;
-	}
-</style>
 <script>
 	function Time(){
 		var now = new Date();
