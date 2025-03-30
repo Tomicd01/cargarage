@@ -1,0 +1,41 @@
+﻿@model CarGarageParking.Models.Garage;
+
+@{
+	ViewData["Title"] = $"{Model.Name} {Model.Location} half-info";
+}
+
+
+<div class="card mb-3">
+	<div class="image"></div>
+	<div class="card-body">
+		<h5 class="card-title text-primary">Naziv garaze: <strong>@Model.Name</strong></h5>
+		<p class="card-text mb-0 text-success">Broj slobodnih mesta: <strong>@Model.AvailableSpots</strong></p>
+		<p class="card-text mb-0 text-muted">Lokacija: <strong>@Model.Location</strong></p>
+		<p class="card-text mb-0 text-muted">Procenat popunjenosti: @Math.Floor(Model.CurrentOccupancy / (double)Model.Capacity * 100)% </p>
+		@if (Model.IsFull == true)
+			{
+				<h3 class="text-danger">Garaza je puna</h3>
+			}
+			else
+			{
+				<h3 class="text-success">Garaza nije puna</h3>
+			}
+			<p class="card-text">
+				<small class="text-body-secondary">
+					Last updated:
+				@if (Model.LastEntryTime.HasValue)
+					{
+					var minutesAgo = (DateTime.Now - Model.LastEntryTime.Value).TotalMinutes;
+						@($"{Math.Floor(minutesAgo)} minutes ago")
+					}
+					else
+					{
+						@("No recent entries")
+					}
+				</small>
+			</p>
+		<a href="@Url.Action("EnterVehicleDetails", "Home", new { id = Model.GarageId })" class="btn btn-primary">Enter a garage</a>
+
+	</div>
+</div>
+

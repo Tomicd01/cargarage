@@ -1,0 +1,66 @@
+﻿@model CarGarageParking.Models.Garage;
+
+@{
+	ViewData["Title"] = $"{Model.Name} {Model.Location} full-info";
+}
+
+
+<div class="card mb-3">
+	<div class="card-body">
+		<h5 class="card-title text-primary">Naziv garaze: <strong>@Model.Name</strong></h5>
+		<h5 class="text-primary">Garage id: @Model.GarageId</h5>
+		<p class="card-text mb-0 text-success">Broj slobodnih mesta: <strong>@Model.AvailableSpots</strong></p>
+		<p class="card-text mb-0 text-muted">Lokacija: <strong>@Model.Location</strong></p>
+		<p class="card-text mb-0 text-muted">Capacity: <strong>@Model.Capacity</strong></p>
+		<p class="card-text mb-0 text-muted">Current occupancy: <strong>@Model.CurrentOccupancy</strong></p>
+		<p class="card-text mb-0 text-muted">Procenat popunjenosti: @Math.Floor(Model.CurrentOccupancy / (double)Model.Capacity * 100)% </p>
+		@if (Model.IsFull == true)
+		{
+			<h4 class="text-danger">Garage is full.</h4>
+		}
+		else
+		{
+			<h4 class="text-success">Spots available</h4>
+		}
+		<p class="card-text">
+			<small class="text-body-secondary">
+				Last updated:
+				@if (Model.LastEntryTime.HasValue)
+				{
+					var minutesAgo = (DateTime.Now - Model.LastEntryTime.Value).TotalMinutes;
+					@($"{Math.Floor(minutesAgo)} minutes ago")
+				}
+				else
+				{
+					@("No recent entries")
+				}
+			</small>
+		</p>
+
+		<div class="vhg">
+			<h5 class="text-primary">Vehicles currently in garage: </h5>
+			<ul class="list-group">
+				@foreach (VehicleInGarage singleVehicle in Model.VehicleInGarages)
+				{
+					<li class="list-group-item  list-group-item-action">
+						<span class="text-muted"><strong>Vehicle license plate: </strong>@singleVehicle.Vehicle.LicensePlate</span>
+						@if(singleVehicle.Owner != null){
+							<span class="text-muted"><strong>Owner: </strong>@(singleVehicle.Owner.FirstName + @singleVehicle.Owner.LastName)</span>
+						}else{
+							<span class="text-muted"><strong>Owner: </strong>Unknown</span>
+						}
+					</li>
+				}
+			</ul>
+		</div>
+
+		<a href="@Url.Action("EnterVehicleDetails", "Home", new { id = Model.GarageId })" class="btn btn-primary">Enter a garage</a>
+	</div>
+	<div class="image"></div>
+</div>
+
+
+@{
+	var vehicles = Model.VehicleInGarages.ToList();
+	Console.WriteLine(vehicles.Count());
+}

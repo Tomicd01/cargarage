@@ -14,6 +14,7 @@ namespace CarGarageParking.Models
   
         public ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
 
+        public ICollection<VehicleInGarage> VehicleInGarages { get; set; } = new List<VehicleInGarage>();
 
     }
 }
