@@ -1,6 +1,10 @@
 ﻿@model CarGarageParking.Models.ViewModel.IPaginationViewModel<CarGarageParking.Models.Garage>
 
-<nav class="page-naviation">
+<head>
+	<link rel="stylesheet" href="~/css/Pagination.css" />
+</head>
+
+<nav class="page-navigation">
 	@if (Model.HasPrevious)
 	{
 		<a href="@Url.Action("Index", new { page = Model.CurrentPage - 1 })" class="btn btn-secondary">Previous</a>
@@ -22,15 +26,3 @@
 
 	}
 </nav>
-
-<style>
-	.page-navigation{
-		display: flex;
-	}
-	nav{
-		
-	}
-	hr{
-		color: white;
-	}
-</style>

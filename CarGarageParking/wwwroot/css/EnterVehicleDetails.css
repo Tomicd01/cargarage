@@ -1,0 +1,52 @@
+﻿.enterVehicleDetails {
+    width: 100%;
+    height: 100%;
+}
+
+.card {
+    background-color: #1C1661;
+    border: 2px solid #1C1661;
+    border-radius: 20px;
+}
+.garage-info {
+    width: 50%;
+}
+
+.form-control {
+    background-color: transparent !important;
+    width: 100%;
+    max-width: 350px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+    color: white !important;
+}
+
+.form-control:focus {
+    outline: none;
+    background-color: transparent;
+    box-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
+}
+
+.form-control::placeholder {
+    color: darkgray;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.list-group-item {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+label {
+    color: white;
+}
+
+form {
+    width: 30%
+}

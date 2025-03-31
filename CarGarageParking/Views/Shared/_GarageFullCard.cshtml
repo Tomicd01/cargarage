@@ -6,6 +6,7 @@
 
 
 <div class="card mb-3">
+	<div class="image"></div>
 	<div class="card-body">
 		<h5 class="card-title text-primary">Naziv garaze: <strong>@Model.Name</strong></h5>
 		<h5 class="text-primary">Garage id: @Model.GarageId</h5>
@@ -44,23 +45,18 @@
 				{
 					<li class="list-group-item  list-group-item-action">
 						<span class="text-muted"><strong>Vehicle license plate: </strong>@singleVehicle.Vehicle.LicensePlate</span>
-						@if(singleVehicle.Owner != null){
+						@if (singleVehicle.Owner != null)
+						{
 							<span class="text-muted"><strong>Owner: </strong>@(singleVehicle.Owner.FirstName + @singleVehicle.Owner.LastName)</span>
-						}else{
+						}
+						else
+						{
 							<span class="text-muted"><strong>Owner: </strong>Unknown</span>
 						}
 					</li>
 				}
 			</ul>
 		</div>
-
-		<a href="@Url.Action("EnterVehicleDetails", "Home", new { id = Model.GarageId })" class="btn btn-primary">Enter a garage</a>
 	</div>
-	<div class="image"></div>
 </div>
 
-
-@{
-	var vehicles = Model.VehicleInGarages.ToList();
-	Console.WriteLine(vehicles.Count());
-}

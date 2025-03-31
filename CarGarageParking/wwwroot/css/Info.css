@@ -1,0 +1,22 @@
+﻿.full{
+    width: 70%;
+}
+.card {
+    background-color: #1C1661;
+    border: 2px solid #1C1661;
+    border-radius: 20px;
+    width: 100%;
+}
+.list-group-item {
+    background-color: transparent;
+    border: none;
+}
+
+.list-group-item:hover {
+    background-color: #251E75;
+}
+
+.list-group {
+    margin-bottom: 1rem;
+    border: 0px;
+}

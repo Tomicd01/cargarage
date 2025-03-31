@@ -4,6 +4,10 @@
 	ViewData["Title"] = "Garage";
 }
 
+<head>
+	<link rel="stylesheet" href="~/css/GarageResult.css"/>
+</head>
+
 <form asp-controller="Garage" asp-action="Index" method="get">
 	<label for="Name">Name: </label>
 	<input type="text" name="Name" id="Name" value="@Context.Request.Query["Name"]" />
@@ -22,55 +26,9 @@
 <div class="garage-list">
 	@foreach (Garage garage in Model.Colection)
 	{
-		@await Html.PartialAsync("_GarageFullCard", garage)
+		@await Html.PartialAsync("_GarageHalfCard", garage, new ViewDataDictionary(ViewData) {{ "ShowLinkGarage", true }})
 	}
 </div>
 
 
 @await Html.PartialAsync("_PaginationViewIndex", Model)
-
-<style>
-	.garage-list{
-		padding: 10px;
-		border-radius: 10px;
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-		align-items: center;
-	}
-	.image{
-		background-image: url("https://i0.wp.com/pdxshoupistas.com/wp-content/uploads/2018/01/leed_garage.jpg?ssl=1");
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: cover;
-		width: 50%;
-		height: auto;
-		border-top-right-radius: 15px;
-		border-bottom-right-radius: 15px;
-	}
-	.list-group-item{
-		background-color: transparent;
-		border: none;
-	}
-
-	.list-group-item:hover {
-		background-color: #251E75;
-	}
-	.list-group{
-		margin-bottom: 1rem;
-		border: 0px; 
-	}
-	.card {
-		display: flex;
-		flex-direction: row;
-		background-color: #1C1661;
-		border: 2px solid #1C1661;
-		border-radius: 15px;
-		color: white;
-		width: 70%;
-	}
-	hr{
-		color: white;
-	}
-</style>

@@ -2,6 +2,7 @@
 using CarGarageParking.Models.ViewModel;
 using CarGarageParking.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace CarGarageParking.Controllers
 {
@@ -71,10 +72,7 @@ namespace CarGarageParking.Controllers
 
             EnterVehicleModel evm = new EnterVehicleModel();
             evm.GarageId = garage.GarageId;
-            evm.GarageName = garage.Name;
-            evm.GarageLocation = garage.Location;
-
-            Console.WriteLine(evm.GarageName);
+            evm.Garage = garage;
 
             return View(evm);
         }

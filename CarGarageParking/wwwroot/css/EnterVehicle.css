@@ -1,0 +1,76 @@
+﻿.find-garage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1C1661;
+    border: 2px solid #1C1661;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+h1 {
+margin-top: 50px;
+color: white;
+}
+
+.form-search {
+margin-bottom: 15px;
+display: flex;
+align-items: center;
+flex-direction: column;
+justify-content: center;
+width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.form-group label {
+    color: white;
+}
+
+input {
+background-color: transparent !important;
+width: 100%;
+max-width: 350px;
+padding: 10px;
+border-radius: 20px;
+border: 1px solid #ccc;
+transition: all 0.3s ease;
+color: white !important;
+}
+
+.form-control:focus {
+    outline: none;
+    background-color: transparent;
+    box-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
+}
+
+.form-control::placeholder {
+    color: darkgray;
+}
+
+.buttons {
+display: flex;
+justify-content: center;
+width: 50%;
+margin-top: 15px;
+}
+
+.btn {
+width: 120px;
+}
+
+.button {
+margin-right: 5px;
+}
+
+.button2 {
+margin-left: 5px;
+}

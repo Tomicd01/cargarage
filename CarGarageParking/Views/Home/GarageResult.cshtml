@@ -2,46 +2,35 @@
 
 <head>
 	<link rel="stylesheet" href="~/css/GarageResult.css" />
+	<script src="~/js/Time.js"></script>
 </head>
 
 @{
 	ViewData["Title"] = "Available garages";
 }
 
+<h5>Current time: <span id="currentTime"></span></h5>
 
-@if(ViewBag.SuccessMessage != null)
+@if (ViewBag.SuccessMessage != null)
 {
-	<div class="alert alert-success">@ViewBag.SuccessMessage .Garage entered at @DateTime.Now</div>	
+	<div class="alert alert-success">@ViewBag.SuccessMessage .Garage entered at @DateTime.Now</div>
 }
 @if (ViewBag.ErrorMessage != null)
 {
 	<div class="alert alert-danger">@ViewBag.ErrorMessage</div>
 }
 
-<h3>Current time: <span id="currentTime"></span></h3>
-
 <div class="garage-list">
 	@foreach (Garage garage in Model.Colection)
 	{
-		@await Html.PartialAsync("_GarageFullCard", garage)
+		@await Html.PartialAsync("_GarageHalfCard", garage, new ViewDataDictionary(ViewData) { { "ShowLink", true } })
 	}
-</div>
-
-<div class="buttons">
-	<a href="@Url.Action("Index", "Home")" class="btn btn-danger">Cancel all</a>
-	<a href="@Url.Action("EnterVehicle", "Home")" class="btn btn-warning">Search for another garage</a>
+	<div class="buttons">
+		<a href="@Url.Action("Index", "Home")" class="btn btn-danger">Cancel all</a>
+		<a href="@Url.Action("EnterVehicle", "Home")" class="btn btn-warning">Search for another garage</a>
+	</div>
 </div>
 
 <div class="navigation">
 	@await Html.PartialAsync("_PaginationViewSearchAGarage", Model)
 </div>
-
-<script>
-	function Time(){
-		var now = new Date();
-
-		document.getElementById("currentTime").innerText = now.toLocaleTimeString();
-	}
-	setInterval(Time, 1000);
-	Time();
-</script>

@@ -1,5 +1,5 @@
 ﻿.garage-list {
-    padding: 10px;
+    padding: 50px 0px;
     border-radius: 10px;
     width: 100%;
     display: flex;
@@ -10,6 +10,7 @@
 
 .alert {
     width: 50%;
+    margin-bottom: 0px !important;
 }
 
 .image {
@@ -19,8 +20,8 @@
     background-size: cover;
     width: 50%;
     height: auto;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
 }
 .list-group-item {
     background-color: transparent;
@@ -40,7 +41,7 @@
     display: flex;
     flex-direction: row;
     background-color: #1C1661;
-    border: 12px solid 1C1661;
+    border: 2px solid #1C1661;
     border-radius: 15px;
     color: white;
     width: 70%;
