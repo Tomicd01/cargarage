@@ -1,0 +1,27 @@
+﻿@model CarGarageParking.Models.Owner
+
+@{
+	ViewData["Title"] = "Register user";
+
+}
+
+<div class="register-user">
+	<h1>Step 1 of 4: Enter basic information</h1>
+    <form asp-controller="Home" asp-action="RegisterUser" method="post">
+        <div class="mb-3 form-group">
+            <label asp-for="FirstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" asp-for="FirstName" aria-describedby="nameHelp">
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 form-group">
+            <label asp-for="LastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" asp-for="LastName" aria-describedby="nameHelp">
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-danger">Reset</button>
+    </form>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-warning">Cancel all</a>
+</div>

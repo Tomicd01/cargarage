@@ -1,0 +1,31 @@
+﻿@model CarGarageParking.Models.Application
+
+@{
+	//ViewData["Title"] = "Confirm application";
+}
+
+<div class="register-user">
+	<h1>Step 4 of 4: Confirm Application</h1>
+	<h2>Owner information</h2>
+	<p><strong>First name: </strong>@Model.Owner.FirstName</p>
+	<p><strong>Last name: </strong>@Model.Owner.LastName</p>
+	<h2>Vehicles</h2>
+
+	<ul>
+		@foreach (var vehicle in Model.Vehicles)
+		{
+			<li>@vehicle.LicensePlate</li>
+		}
+	</ul>
+
+	<h2>Credit</h2>
+	<p>@Model.Credit</p>
+
+	<h2>Active Membership: </h2>
+	<p>@(Model.HasActiveMembership ? "Yes" : "No")</p>
+	<form asp-action="EnterVehicleApplicationDetails" asp-controller="Home" method="post">
+		<button type="submit" class="btn btn-success">Confirm</button>
+		<a href="@Url.Action("Index", "Home")" class="btn btn-warning">Cancel</a>
+		</a>
+	</form>
+</div>

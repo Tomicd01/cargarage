@@ -3,6 +3,7 @@ using CarGarageParking.Models.ViewModel;
 using CarGarageParking.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Newtonsoft.Json;
 
 namespace CarGarageParking.Controllers
 {
@@ -152,9 +153,105 @@ namespace CarGarageParking.Controllers
         }
 
         [HttpGet]
-        public IActionResult RegisterUser()
+        public IActionResult RegisterUser(int id)
+        {
+            Owner owner = _unitOfWork.OwnerService.GetOwnerById(id);
+            return View(owner);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegisterUser(Owner owner)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(owner);
+            }
+
+            Application app = new Application()
+            {
+                Owner = owner,
+                Credit = 100,
+                HasActiveMembership = true
+            };
+
+            TempData["ApplicationData"] = JsonConvert.SerializeObject(app);
+
+            return RedirectToAction("SelectVehicleCount");
+        }
+
+        [HttpGet]
+        public IActionResult SelectVehicleCount()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SelectVehicleCount(int numberOfVehicles)
+        {
+            if (numberOfVehicles < 1 || numberOfVehicles > 10)
+            {
+                ModelState.AddModelError("", "You can register between 1 to 10.");
+                return View();
+            }
+
+            var applicationData = JsonConvert.DeserializeObject<Application>(TempData["ApplicationData"].ToString());
+            applicationData.Vehicles = new List<Vehicle>();
+
+            for(int i = 0; i < numberOfVehicles; i++)
+            {
+                applicationData.Vehicles.Add(new Vehicle());
+            }
+
+            TempData["ApplicationData"] = JsonConvert.SerializeObject(applicationData);
+
+            return View("EnterVehicleApplicationDetails", applicationData.Vehicles);
+
+        }
+
+        [HttpGet]
+        public IActionResult EnterVehicleApplicationDetails()
+        {
+            var applicationData = JsonConvert.DeserializeObject<Application>(TempData["ApplicationData"].ToString());
+            return View(applicationData.Vehicles);
+        }
+
+        [HttpPost]
+        public IActionResult EnterVehicleApplicationDetails(List<Vehicle> vehicles)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vehicles);
+            }
+
+            var applicationData = JsonConvert.DeserializeObject<Application>(TempData["ApplicationData"].ToString());
+            applicationData.Vehicles = new List<Vehicle>();
+            TempData["ApplicationData"] = JsonConvert.SerializeObject(applicationData);
+
+            return View("ConfirmApplication", applicationData);
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmationApplication()
+        {
+            var applicationData = JsonConvert.DeserializeObject<Application>(TempData["ApplicationData"].ToString());
+            return View(applicationData);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmationApplication(Application app)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(app);
+            }
+           _unitOfWork.ApplicationService.CreateApplication(app);
+
+            TempData.Remove("ApplicationData");
+
+            ViewBag.Message = "Application successfully submitted!";
+            return RedirectToAction("Index", "Home");
         }
     }
 }

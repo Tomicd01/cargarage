@@ -7,5 +7,6 @@
         IVehicleService VehicleService { get; }
         IGarageService GarageService { get; }
         IVehicleInGarageService VehicleInGarageService { get; }
+        IApplicationService ApplicationService { get; }
     }
 }
