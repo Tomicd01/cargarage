@@ -1,0 +1,17 @@
+﻿@model CarGarageParking.Models.ViewModel.ApplicationRegistrationViewModel
+
+<head>
+	<link rel="stylesheet" href="~/css/OwnerFullCard.css" />
+</head>
+
+<div class="full-card">
+	@await Html.PartialAsync("_OwnerBasicCard", Model)
+
+	<h2>Vehicles</h2>
+	<ul class="list-group list-group-flush mb-3">
+		@foreach (var vehicle in Model.Vehicles)
+		{
+			<li class="list-group-item text-muted"><strong>License plate: @vehicle.LicensePlate</strong></li>
+		}
+	</ul>
+</div>

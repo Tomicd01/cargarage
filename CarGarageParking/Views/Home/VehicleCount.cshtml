@@ -1,0 +1,36 @@
+﻿@model CarGarageParking.Models.ViewModel.ApplicationRegistrationViewModel
+
+@{
+	ViewData["Title"] = "Choose a number of cars";
+}
+
+<head>
+	<link rel="stylesheet" href="~/css/RegisterUserCard.css" />
+</head>
+
+
+<div class="register-user">
+	<h1>Step 2 of 4: Select number of vehicles</h1>
+	
+	<div class="basic-card">
+		@await Html.PartialAsync("_OwnerBasicCard", Model, new ViewDataDictionary(ViewData) { { "ShowLink", false }, { "HasList", false } })
+	</div>
+
+	<form asp-action="VehicleCount" asp-controller="Home" method="post">
+		<input type="hidden" asp-for="Owner.FirstName"/>
+		<input type="hidden" asp-for="Owner.LastName"/>
+		<div class="mb-3 form-group">
+			<input type="number" asp-for="NumberOfVehicles" class="form-control" placeholder="Enter Number Of Vehicles" step="1" min="1" max="10">
+		</div>
+
+		<div class="buttons mb-3">
+			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="reset" class="btn btn-danger">Reset</button>
+			<a href="@Url.Action("Index", "Home")" class="btn btn-warning">Cancel all</a>
+		</div>
+	</form>
+
+	<div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+		<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 50%"></div>
+	</div>
+</div>

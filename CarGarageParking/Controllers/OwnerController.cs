@@ -1,4 +1,5 @@
 ﻿using CarGarageParking.Models;
+using CarGarageParking.Models.ViewModel;
 using CarGarageParking.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,16 @@ namespace CarGarageParking.Controllers
                 owners = owners.Where(o => o.Vehicles.Count() == numberOfCars);
             }
 
-            return View(owners);
+            var app = owners.Select(o => new ApplicationRegistrationViewModel()
+            {
+                Owner = o,
+                NumberOfVehicles = o.Vehicles.Count(),
+                Vehicles = o.Vehicles.ToList()
+            }).ToList();
+
+            PaginationViewModel<Owner> pgvm = new PaginationViewModel<Owner>();
+
+            return View(app);
 
         }
 

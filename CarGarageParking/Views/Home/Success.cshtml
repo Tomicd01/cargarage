@@ -1,0 +1,28 @@
+﻿@model CarGarageParking.Models.ViewModel.ApplicationRegistrationViewModel
+
+@{
+	ViewData["Title"] = "Registration successful";
+}
+
+<head>
+	<link rel="stylesheet" href="~/css/RegisterUserCard.css" />
+</head>
+
+<div class="register-user">
+	@if (ViewBag.SuccessMessage != null)
+	{
+		<div class="alert alert-success">@ViewBag.SuccessMessage</div>
+	}
+
+	<h1 class="text-success">Registration successful!</h1>
+	<p>Your registration has been completed</p>
+
+	<div class="basic-card">
+		@await Html.PartialAsync("_OwnerFullCard", Model)
+	</div>
+
+	<div class="buttons">
+		<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back to home</a>
+		<a href="@Url.Action("RegisterUser", "Home")" class="btn btn-secondary">Register a new User</a>
+	</div>
+</div>

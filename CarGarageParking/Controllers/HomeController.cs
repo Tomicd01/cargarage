@@ -147,111 +147,180 @@ namespace CarGarageParking.Controllers
 
 
         [HttpGet]
-        public IActionResult ExitVehicle()
+        public IActionResult RegisterUser()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult RegisterUser(int id)
-        {
-            Owner owner = _unitOfWork.OwnerService.GetOwnerById(id);
-            return View(owner);
+            var model = new ApplicationRegistrationViewModel();
+            model.Owner = new Owner();
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterUser(Owner owner)
+        public IActionResult RegisterUser(ApplicationRegistrationViewModel model)
         {
             if(!ModelState.IsValid)
             {
-                return View(owner);
+                return View(model);
             }
 
-            Application app = new Application()
+            return RedirectToAction("VehicleCount", new
             {
-                Owner = owner,
+                firstName = model.Owner.FirstName,
+                lastName = model.Owner.LastName
+            });
+        }
+
+        [HttpGet]
+        public IActionResult VehicleCount(string firstName, string lastName)
+        {
+            var model = new ApplicationRegistrationViewModel();
+            model.Owner = new Owner
+            {
+                FirstName = firstName,
+                LastName = lastName
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult VehicleCount(ApplicationRegistrationViewModel model)
+        {
+            if (model.NumberOfVehicles < 1 || model.NumberOfVehicles > 10)
+            {
+                ModelState.AddModelError("", "You can register between 1 to 10.");
+                return View(model);
+            }
+
+            for(int i = 0; i < model.NumberOfVehicles; i++)
+            {
+                model.Vehicles.Add(new Vehicle());
+            }
+
+
+            return RedirectToAction("LicenseInput", new
+            {
+                firstName = model.Owner.FirstName,
+                lastName = model.Owner.LastName,
+                numberOfVehicles = model.NumberOfVehicles
+            });
+
+        }
+
+        [HttpGet]
+        public IActionResult LicenseInput(string firstName, string lastName, int numberOfVehicles)
+        {
+            try
+            {
+                var model = new ApplicationRegistrationViewModel()
+                {
+                    Owner = new Owner
+                    {
+                        FirstName = firstName,
+                        LastName = lastName
+                    },
+                    NumberOfVehicles = numberOfVehicles,
+                    Vehicles = new List<Vehicle>()
+                };
+
+                for(int i = 0; i < numberOfVehicles; i++)
+                {
+                    model.Vehicles.Add(new Vehicle());
+                }
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LicenseInput(ApplicationRegistrationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("LicenseInput", model);
+            }
+
+            return RedirectToAction("ConfirmApplication", new
+            {
+                firstName = model.Owner.FirstName,
+                lastName = model.Owner.LastName,
+                numberOfvehicles = model.NumberOfVehicles,
+                licensePlates = string.Join(",", model.Vehicles.Select(v => v.LicensePlate))
+            });
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmApplication(string firstName, string lastName, int numberOfVehicles, string licensePlates)
+        {
+            var model = new ApplicationRegistrationViewModel()
+            {
+                Owner = new Owner
+                {
+                    FirstName = firstName,
+                    LastName = lastName
+                },
+                NumberOfVehicles = numberOfVehicles,
+                Vehicles = licensePlates.Split(",").Select(lp => new Vehicle { LicensePlate = lp }).ToList()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmApplication(ApplicationRegistrationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ConfirmApplication", model);
+            }
+
+            Application application = new Application()
+            {
+                Owner = model.Owner,
+                Vehicles = model.Vehicles,
                 Credit = 100,
                 HasActiveMembership = true
             };
 
-            TempData["ApplicationData"] = JsonConvert.SerializeObject(app);
-
-            return RedirectToAction("SelectVehicleCount");
-        }
-
-        [HttpGet]
-        public IActionResult SelectVehicleCount()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SelectVehicleCount(int numberOfVehicles)
-        {
-            if (numberOfVehicles < 1 || numberOfVehicles > 10)
-            {
-                ModelState.AddModelError("", "You can register between 1 to 10.");
-                return View();
-            }
-
-            var applicationData = JsonConvert.DeserializeObject<Application>(TempData["ApplicationData"].ToString());
-            applicationData.Vehicles = new List<Vehicle>();
-
-            for(int i = 0; i < numberOfVehicles; i++)
-            {
-                applicationData.Vehicles.Add(new Vehicle());
-            }
-
-            TempData["ApplicationData"] = JsonConvert.SerializeObject(applicationData);
-
-            return View("EnterVehicleApplicationDetails", applicationData.Vehicles);
-
-        }
-
-        [HttpGet]
-        public IActionResult EnterVehicleApplicationDetails()
-        {
-            var applicationData = JsonConvert.DeserializeObject<Application>(TempData["ApplicationData"].ToString());
-            return View(applicationData.Vehicles);
-        }
-
-        [HttpPost]
-        public IActionResult EnterVehicleApplicationDetails(List<Vehicle> vehicles)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(vehicles);
-            }
-
-            var applicationData = JsonConvert.DeserializeObject<Application>(TempData["ApplicationData"].ToString());
-            applicationData.Vehicles = new List<Vehicle>();
-            TempData["ApplicationData"] = JsonConvert.SerializeObject(applicationData);
-
-            return View("ConfirmApplication", applicationData);
-        }
-
-        [HttpGet]
-        public IActionResult ConfirmationApplication()
-        {
-            var applicationData = JsonConvert.DeserializeObject<Application>(TempData["ApplicationData"].ToString());
-            return View(applicationData);
-        }
-
-        [HttpPost]
-        public IActionResult ConfirmationApplication(Application app)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(app);
-            }
-           _unitOfWork.ApplicationService.CreateApplication(app);
-
-            TempData.Remove("ApplicationData");
+           _unitOfWork.ApplicationService.CreateApplication(application);
 
             ViewBag.Message = "Application successfully submitted!";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Success", new
+            {
+                firstName = model.Owner.FirstName,
+                lastName = model.Owner.LastName,
+                numberOfVehicles = model.NumberOfVehicles,
+                licensePlates = string.Join(",", model.Vehicles.Select(v => v.LicensePlate))
+            });
+        }
+
+        [HttpGet]
+        public IActionResult Success(string firstName, string lastName, int numberOfVehicles, string licensePlates)
+        {
+            var model = new ApplicationRegistrationViewModel()
+            {
+                Owner = new Owner
+                {
+                    FirstName = firstName,
+                    LastName = lastName
+                },
+                NumberOfVehicles = numberOfVehicles,
+                Vehicles = licensePlates.Split(",").Select(lp => new Vehicle { LicensePlate = lp }).ToList()
+            };
+
+            ViewBag.SuccessMessage = "Application successfully submitted!";
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ExitVehicle()
+        {
+            LeaveGarageViewModel model = new LeaveGarageViewModel();
+            return View(model);
         }
     }
 }

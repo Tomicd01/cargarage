@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CarGarageParking.Models.Owner>
+﻿@model IEnumerable<CarGarageParking.Models.ViewModel.ApplicationRegistrationViewModel>
 @{
 	ViewData["Title"] = "Owner page";
 }
@@ -19,32 +19,15 @@
 <h1>Collection of owners</h1>
 
 <div class="owners-list">
-	@foreach(Owner owner in Model){
-		@await Html.PartialAsync("_OwnerCard", owner);
+	@foreach(var single in Model){
+		@await Html.PartialAsync("_OwnerBasicCard", single, new ViewDataDictionary(ViewData) { { "ShowLink", true } })
 	}
 </div>
+
+@* @await Html.PartialAsync("_PaginationViewOwner", Model) *@
 
 <style>
 	.owners-list{
 		width: 50%;
-	}
-	.owner-card-look{
-		border: 1px solid gray;
-		border-radius: 15px;
-		padding: 10px;
-		margin: 10px;
-		background-color: dodgerblue;
-		color: white;
-	}
-
-	.owner-card-look a {
-		color: yellow;
-		text-align: center;
-		text-decoration: none;
-	}
-
-	.owner-card-look a:hover {
-		color: white;
-		text-align: center;
 	}
 </style>
