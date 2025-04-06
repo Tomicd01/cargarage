@@ -39,6 +39,28 @@ namespace CarGarageParking.Services
         {
             return _context.VehicleInGarages.Find(id);
         }
+        public VehicleInGarage? FindActiveVehicleInGarage(string licensePlate)
+        {
+            if (string.IsNullOrEmpty(licensePlate))
+            {
+                Console.WriteLine("License plate is null");
+                return null;
+            }
+            var result = _context.VehicleInGarages
+                .Include(vig => vig.Vehicle)
+                .ThenInclude(v => v.Application)
+                .ThenInclude(a => a.Owner)
+                .Include(vig => vig.Garage)
+                .FirstOrDefault(vig => vig.Vehicle.LicensePlate.ToLower().Trim() == licensePlate.ToLower().Trim() && vig.IsVehicleStillInGarage == true);
+
+            if(result == null)
+            {
+                Console.WriteLine($"No vehicle with license plate: {licensePlate}");
+            }
+
+            return result;
+        }
+
 
         public void Update(VehicleInGarage vehicleInGarage)
         {

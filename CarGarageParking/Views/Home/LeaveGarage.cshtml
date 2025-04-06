@@ -1,0 +1,42 @@
+﻿@model CarGarageParking.Models.ViewModel.LeaveGarageViewModel
+
+@{
+	//ViewData["Title"] = "Leave a garage";
+}
+
+<head>
+	<script src="~/js/Time.js"></script>
+	<link rel="stylesheet" href="~/css/FindVehicleForExit.css" />
+</head>
+
+<div class="exit-garage">
+	<h1>Vehicle Exit</h1>
+	<h3>Current time: <span id="currentTime"></span></h3>
+
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item"><h4>Vehicle Details</h4></li>
+		<li class="list-group-item"><p>License plate: <strong>@Model.Vehicle.LicensePlate</strong></p></li>
+		<li class="list-group-item"><p>Garage: <strong>@Model.VehicleInGarage.Garage.Name</strong></p></li>
+		<li class="list-group-item"><p>Garage Location: <strong>@Model.VehicleInGarage.Garage.Location</strong></p></li>
+		<li class="list-group-item"><p>Garage occupancy: <strong>@Model.VehicleInGarage.Garage.CurrentOccupancy</strong></p></li>
+		<li class="list-group-item"><p class="text-warning">Hourly rate: <strong>@Model.VehicleInGarage.HourlyRate.ToString("C")</strong></p></li>
+		<li class="list-group-item"><p class="text-success text-lg">Total amount to pay: <strong>@Model.Payment.TotalCharge.ToString("C")</strong></p></li>
+	</ul>
+
+
+	<form asp-action="PaymentInput" asp-controller="Home" method="get">
+		<input type="hidden" name="licensePlate" value="@Model.VehicleInGarage.Vehicle.LicensePlate" />
+		<input type="hidden" name="garageId" value="@Model.VehicleInGarage.Garage.GarageId" />
+
+		<div class="buttons">
+			<button type="submit" class="btn btn-primary">Proceed to pay</button>
+			<a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Stay in garage</a>
+		</div>
+	</form>
+
+	<div class="progress mt-3" role="progressbar" aria-label="Animated striped example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+		<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 50%">Step 2 of 4</div>
+	</div>
+</div>
+
+

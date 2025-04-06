@@ -1,0 +1,44 @@
+﻿@model CarGarageParking.Models.ViewModel.LeaveGarageViewModel
+
+@* @if(Model.Application != null){ *@
+@* 	ViewData["Title"] = "Pay"; *@
+@* } *@
+
+<head>
+	<script src="~/js/Time.js"></script>
+	<script src="~/js/Alert.js"></script>
+	<link rel="stylesheet" href="~/css/FindVehicleForExit.css" />
+</head>
+
+<div class="exit-garage">
+	<h1>Enter payment</h1>
+	<h3>Current time: <span id="currentTime"></span></h3>
+	@if (ViewBag.ErrorMessage != null)
+	{
+		<div id="alert" class="alert alert-danger">@ViewBag.ErrorMessage</div>
+	}
+
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item"><p>License plate: <strong>@Model.VehicleInGarage.Vehicle.LicensePlate</strong></p></li>
+		<li class="list-group-item"><p class="text-success text-lg-start">Total amount to pay: <strong>@Model.Payment.TotalCharge.ToString("C")</strong></p></li>
+		<li class="list-group-item"><p class="text-warning">Hourly rate: <strong>@Model.VehicleInGarage.HourlyRate.ToString("C")</strong></p></li>
+		<li class="list-group-item"><p> Time of entry: <strong>@Model.VehicleInGarage.EntryTime</strong></p></li>
+		<li class="list-group-item"><p >Membership discount: <strong>@(Model.Application?.HasActiveMembership == true ? "Yes" : "No")</strong></p></li>
+	</ul>
+
+
+	<form asp-action="PaymentInput" asp-controller="Home" method="post">
+		<input type="hidden" name="licensePlate" value="@Model.VehicleInGarage.Vehicle.LicensePlate" />
+		<input type="number" id="paidAmount" name="paidAmount" class="form-control" step="0.01" placeholder="Enter Amount" />
+
+		<div class="buttons mt-3">
+			<button type="submit" class="btn btn-primary btn-lg" value="true" name="amountIsPaid">Pay</button>
+			<a href="@Url.Action("Index", "Home")" class="btn btn-danger btn-lg">Cancel</a>
+		</div>
+	</form>
+
+	<div class="progress mt-3" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+		<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%">Step 3 of 4</div>
+	</div>
+</div>
+

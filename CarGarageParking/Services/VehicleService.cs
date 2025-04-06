@@ -40,6 +40,11 @@ namespace CarGarageParking.Services
             return vehicle;
         }
 
+        public Vehicle GetVehicleByLicensePlate(string licensePlate)
+        {
+            return _dbContext.Vehicles.FirstOrDefault(v => v.LicensePlate.ToLower().Trim() == licensePlate.ToLower().Trim());
+        }
+
         public void UpdateVehicle(Vehicle vehicle)
         {
             _dbContext.Vehicles.Update(vehicle);

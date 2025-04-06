@@ -1,0 +1,71 @@
+﻿@model CarGarageParking.Models.ViewModel.LeaveGarageViewModel
+
+@{
+	ViewData["Title"] = "Payment Confirmation";
+}
+
+<head>
+	<script src="~/js/Time.js"></script>
+	<script src="~/js/Alert.js"></script>
+	<link rel="stylesheet" href="~/css/FindVehicleForExit.css" />
+</head>
+
+<div class="exit-garage">
+	<h1 class="text-success">Confirm payment</h1>
+	<h3>Current time: <span id="currentTime"></span></h3>
+	@if (ViewBag.SuccessMessage != null)
+	{
+		<div id="alert" class="alert alert-success">@ViewBag.SuccessMessage</div>
+	}
+
+	@await Html.PartialAsync("_GarageHalfCard", Model.VehicleInGarage.Garage)
+
+	<h3>Vehicle information</h3>
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item"><p>License plate: <strong>@Model.VehicleInGarage.Vehicle.LicensePlate</strong></p></li>
+		<li class="list-group-item"><p class="text-warning">Entry time: <strong>@Model.VehicleInGarage.EntryTime</strong></p></li>
+	</ul>
+	<h3>Payment details</h3>
+	@if(Model.Payment.IsPaid){
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item"><p class="text-success">Amount paid: <strong>@Model.Payment.TotalCharge.ToString("C")</strong></p></li>
+			<li class="list-group-item"><p class="text-warning">Payment time: <strong>@Model.Payment.PaymentTime</strong></p></li>
+			<li class="list-group-item"><p class="text-danger">Expiration time: <strong>@Model.Payment.ExpirationTime</strong></p></li>
+		</ul>
+	}else{
+		<p class="text-danger">No Payment found for this Vehicle. Please proceed to payment.</p>
+	}
+	<h3>Time to exit: <span id="timeLeft" data-expiration="@Model.Payment.ExpirationTime.ToString("yyyy-MM-ddTHH:mm:ss")"></span></h3>
+	<form asp-action="PaymentConfirmation" asp-controller="Home" method="post">
+		<input type="hidden" name="licensePlate" value="@Model.VehicleInGarage.Vehicle.LicensePlate" />
+
+		<div class="buttons mt-3">
+			<button type="submit" class="btn btn-danger btn-lg" id="leaveGarageButton">Leave garage</button>
+			<a href="@Url.Action("Index", "Home")" class="btn btn-secondary btn-lg" id="returnHome" style="display: none;">Back To Home</a>
+		</div>
+	</form>
+
+	<div class="progress mt-3" role="progressbar" aria-label="Animated striped example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+		<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">Step 4 of 4</div>
+	</div>
+</div>
+
+<script>
+	let expirationTime = new Date('@Model.Payment.ExpirationTime.ToString("yyyy-MM-ddTHH:mm:ss")');
+	let interval = setInterval(function(){
+		let now = new Date();
+		let timeLeft = expirationTime - now;
+
+		if(timeLeft <= 0){
+			clearInterval(interval);
+			document.getElementById("timeLeft").innerHTML = "Time expired!";
+			document.getElementById("leaveGarageButton").disabled = true;
+			document.getElementById("returnHome").style.display = "inline";
+		}else{
+			let minutes = Math.floor((timeLeft / 1000 / 60 ) % 60);
+			let seconds = Math.floor((timeLeft / 1000) % 60);
+			document.getElementById("timeLeft").innerHTML = minutes + "m " + seconds + "s ";
+		}
+	}, 1000);
+
+</script>

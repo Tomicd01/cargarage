@@ -1,0 +1,31 @@
+﻿@model CarGarageParking.Models.ViewModel.LeaveGarageViewModel
+
+@{
+	ViewData["Title"] = "Leave a garage";
+}
+
+<head>
+	<script src="~/js/Time.js"></script>
+	<link rel="stylesheet" href="~/css/FindVehicleForExit.css" />
+</head>
+
+<div class="exit-garage">
+	<h1>Leave a Garage</h1>
+	<h3>Current time: <span id="currentTime"></span></h3>
+	<form asp-action="FindVehicleForExit" asp-controller="Home" method="post">
+		<div class="form-group">
+			<input type="text" asp-for="VehicleInGarage.Vehicle.LicensePlate" placeholder="Enter License plate" class="form-control" required />
+			<span asp-validation-for="VehicleInGarage.Vehicle.LicensePlate" class="text-danger"></span>
+		</div>
+		<div class="buttons mt-3">
+			<button type="submit" class="btn btn-primary">Search</button>
+			<button type="reset" class="btn btn-danger">Reset</button>
+			<a href="@Url.Action("Index", "Home")" class="btn btn-warning">Back To Index</a>
+		</div>
+	</form>
+
+	<div class="progress mt-3" role="progressbar" aria-label="Animated striped example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+		<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 25%">Step 1 of 4</div>
+	</div>
+</div>
+

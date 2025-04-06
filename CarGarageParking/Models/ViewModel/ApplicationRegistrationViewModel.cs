@@ -11,10 +11,5 @@ namespace CarGarageParking.Models.ViewModel
         public int? NumberOfVehicles { get; set; }
         public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
 
-        public ApplicationRegistrationViewModel() 
-        {
-            Owner = new Owner();
-            Vehicles = new List<Vehicle>();    
-        }
     }
 }

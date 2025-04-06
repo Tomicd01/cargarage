@@ -1,0 +1,96 @@
+﻿.exit-garage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 75%;
+    background-color: #29228A;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.basic-card {
+    width: 70%;
+}
+
+form {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    max-height: 50px; 
+}
+
+.btn {
+    margin: 0px 7px;
+}
+
+input {
+    background-color: transparent !important;
+    width: 100%;
+    max-width: 350px;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+    color: white !important;
+}
+
+.form-control:focus {
+    outline: none;
+    background-color: transparent;
+    box-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
+}
+
+.form-control::placeholder {
+    color: darkgray;
+}
+
+.list-group-item {
+    background-color: transparent;
+    border-bottom: 1px solid #747A9A;
+    color: #747A9A;
+}
+
+.list-group-item:hover {
+    background-color: #251E75;
+}
+
+.list-group {
+    width: 80%;
+    margin-bottom: 1rem;
+    border: 1px;
+}
+.alert {
+    width: 80% !important;
+    margin-top: 20px;
+    transition: opacity 1s ease;
+}
+.card {
+    display: flex;
+    flex-direction: row;
+    background-color: #1C1661;
+    border: 2px solid #1C1661;
+    border-radius: 15px;
+    color: white;
+    width: 80%;
+}
+
+#currentTime{
+    color: cornflowerblue;
+}
+
+.progress {
+    width: 80%;
+}

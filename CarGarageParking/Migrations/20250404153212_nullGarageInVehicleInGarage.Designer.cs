@@ -4,6 +4,7 @@ using CarGarageParking;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarGarageParking.Migrations
 {
     [DbContext(typeof(CarGarageParkingDbContext))]
-    partial class CarGarageParkingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250404153212_nullGarageInVehicleInGarage")]
+    partial class nullGarageInVehicleInGarage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

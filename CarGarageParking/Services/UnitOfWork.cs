@@ -12,6 +12,7 @@
             GarageService = new GarageService(context);
             VehicleInGarageService = new VehicleInGarageService(context);
             ApplicationService = new ApplicationService(context);
+            PaymentService = new PaymentService(context);
         }
         public IOwnerService OwnerService
         {
@@ -34,6 +35,11 @@
         }
 
         public IApplicationService ApplicationService
+        {
+            get; private set;
+        }
+
+        public IPaymentService PaymentService
         {
             get; private set;
         }

@@ -10,5 +10,6 @@ namespace CarGarageParking.Services
         void CreateVehicle(Vehicle vehicle);
         void UpdateVehicle(Vehicle vehicle);
         void DeleteVehicle(int id);
+        public Vehicle GetVehicleByLicensePlate(string licensePlate);
     }
 }

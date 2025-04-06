@@ -1,4 +1,5 @@
 ﻿using CarGarageParking.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarGarageParking.Services
 {
@@ -29,6 +30,12 @@ namespace CarGarageParking.Services
         public Application GetApplicationById(int id)
         {
             return _context.Applications.Find(id);
+        }
+
+        public Application? GetApplicationByOwnerId(int ownerId)
+        {
+            return _context.Applications.Include(a => a.Owner).FirstOrDefault(a => a.OwnerId == ownerId);
+
         }
 
         public IEnumerable<Application> GetApplications()

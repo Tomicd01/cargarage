@@ -118,9 +118,9 @@ namespace CarGarageParking.Controllers
             VehicleInGarage vig = new VehicleInGarage
             {
                 GarageId = garageId,
-                Vehicle = new Vehicle
+                Vehicle = new Vehicle()
                 {
-                    LicensePlate = licensePlate
+                    LicensePlate = licensePlate,
                 },
                 EntryTime = DateTime.Now,
                 HourlyRate = 25,
@@ -286,7 +286,17 @@ namespace CarGarageParking.Controllers
                 HasActiveMembership = true
             };
 
-           _unitOfWork.ApplicationService.CreateApplication(application);
+     
+            //for(int i = 0; i < application.Vehicles.Count; i++)
+            //{
+            //    var item = application.Vehicles.ToList()[i];
+            //    item.VehicleInGarages.Add(new VehicleInGarage
+            //    {
+            //        Owner = application.Owner,
+            //    });
+            //}
+
+            _unitOfWork.ApplicationService.CreateApplication(application);
 
             ViewBag.Message = "Application successfully submitted!";
             return RedirectToAction("Success", new
@@ -317,10 +327,212 @@ namespace CarGarageParking.Controllers
         }
 
         [HttpGet]
-        public IActionResult ExitVehicle()
+        public IActionResult FindVehicleForExit()
         {
             LeaveGarageViewModel model = new LeaveGarageViewModel();
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult FindVehicleForExit(LeaveGarageViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.VehicleInGarage.Vehicle.LicensePlate))
+            {
+                ModelState.AddModelError("", "License plate is required!");
+                return View(model);
+            }
+            VehicleInGarage vig = _unitOfWork.VehicleInGarageService.FindActiveVehicleInGarage(model.VehicleInGarage.Vehicle.LicensePlate);
+
+            if(vig == null)
+            {
+                ModelState.AddModelError("", "There is no Vehicle in garage!");
+                return View(model);
+            }
+
+            return RedirectToAction("LeaveGarage", new { licensePlate = vig.Vehicle.LicensePlate, garageId = vig.Garage.GarageId });
+        }
+
+        [HttpGet]
+        public IActionResult LeaveGarage(string licensePlate, int garageId)
+        {
+            licensePlate = licensePlate.Trim().ToLower();
+
+            VehicleInGarage vig = _unitOfWork.VehicleInGarageService.FindActiveVehicleInGarage(licensePlate);
+            if(vig == null || vig.Garage.GarageId != garageId)
+            {
+                return NotFound("Vehicle is not found in specific garage");
+            }
+            
+            Application application = vig.Vehicle.Application;
+
+            var hourlyrate = vig.HourlyRate;
+            var timeSpend = DateTime.Now - vig.EntryTime;
+            var hoursSpend = Math.Ceiling(timeSpend.TotalHours);
+            decimal amountToPay = (decimal)hoursSpend * hourlyrate;
+            var discountAmount = 0m;
+
+            if(application != null)
+            {
+                var discount = application.HasActiveMembership ? 0.1m : 0.00m;
+                discountAmount = amountToPay * (amountToPay * discount);
+            }
+
+            LeaveGarageViewModel lgvm = new LeaveGarageViewModel(); 
+            lgvm.Vehicle = vig.Vehicle;
+            lgvm.Owner = application?.Owner;
+            lgvm.Application = application;
+            lgvm.Payment = new Payment();
+
+            if(lgvm.Application != null)
+            {
+                lgvm.Payment.TotalCharge = discountAmount;
+            }
+            else
+            {
+                lgvm.Payment.TotalCharge = amountToPay;
+            }
+
+            lgvm.VehicleInGarage = vig;
+
+            return View(lgvm);
+        }
+
+        [HttpGet]
+        public IActionResult PaymentInput(string licensePlate, string? errorMessage)
+        {
+            licensePlate = licensePlate.Trim().ToLower();
+
+            VehicleInGarage vig = _unitOfWork.VehicleInGarageService.FindActiveVehicleInGarage(licensePlate);
+
+            Application application = vig.Vehicle.Application;
+
+            var hourlyrate = vig.HourlyRate;
+            var timeSpend = DateTime.Now - vig.EntryTime;
+            var hoursSpend = Math.Ceiling(timeSpend.TotalHours);
+            decimal amountToPay = (decimal)hoursSpend * hourlyrate;
+            var discountAmount = 0m;
+
+            if (application != null)
+            {
+                var discount = application.HasActiveMembership ? 0.1m : 0.00m;
+                discountAmount = amountToPay * (amountToPay * discount);
+            }
+
+            if (vig == null)
+            {
+                return NotFound("Not found");
+            }
+
+            LeaveGarageViewModel lgvm = new LeaveGarageViewModel();
+            lgvm.Vehicle = vig.Vehicle;
+            lgvm.Owner = application?.Owner;
+            lgvm.Application = application;
+            lgvm.Payment = new Payment();
+            lgvm.Payment.PaymentTime = DateTime.Now;
+
+            if (lgvm.Application != null)
+            {
+                lgvm.Payment.TotalCharge = discountAmount;
+            }
+            else
+            {
+                lgvm.Payment.TotalCharge = amountToPay;
+            }
+            lgvm.VehicleInGarage = vig;
+
+            ViewBag.ErrorMessage = errorMessage;
+
+            return View(lgvm);
+        }
+
+        [HttpPost]
+        public IActionResult PaymentInput(string licensePlate, bool amountIsPaid, decimal paidAmount)
+        {
+            if (!amountIsPaid)
+            {
+                return RedirectToAction("PaymentInput", new { licensePlate, errorMessage = "Payment was cancelled." });
+            }
+            licensePlate = licensePlate?.Trim().ToLower();
+
+            VehicleInGarage vig = _unitOfWork.VehicleInGarageService.FindActiveVehicleInGarage(licensePlate);
+            if (vig == null || vig.Vehicle == null)
+            {
+                return RedirectToAction("PaymentInput", new { licensePlate, errorMessage = "The vehicle has not ben found in Garage." });
+            }
+
+            Application application = vig.Vehicle.Application;
+
+            var hourlyrate = vig.HourlyRate;
+            var timeSpend = DateTime.Now - vig.EntryTime;
+            var hoursSpend = Math.Ceiling(timeSpend.TotalHours);
+            decimal baseAmountToPay = (decimal)hoursSpend * hourlyrate;
+
+
+            var discountAmount = application?.HasActiveMembership == true ? 0.1m : 0.00m;
+            var amountToPay = baseAmountToPay - (baseAmountToPay * discountAmount);
+
+            if(paidAmount < amountToPay)
+            {
+                return RedirectToAction("PaymentInput", new { licensePlate, errorMessage = "The amount entered is less than required." });
+            }
+
+            LeaveGarageViewModel lgvm = new LeaveGarageViewModel();
+            lgvm.Application = application;
+            if(lgvm.Application != null)
+            {
+                lgvm.Application.Owner = application?.Owner;
+            }
+            lgvm.Payment = new Payment()
+            {
+                TotalCharge = paidAmount,
+                VehicleInGarage = vig,
+                IsPaid = true,
+                PaymentTime = DateTime.Now,
+                ExpirationTime = DateTime.Now.AddMinutes(Payment.TimeToTakeCar),
+                
+            };
+
+            _unitOfWork.PaymentService.Create(lgvm.Payment);
+
+            return RedirectToAction("PaymentConfirmation", new { licensePlate, successMessage = "Payment was successful!" });
+        }
+
+        [HttpGet]
+        public IActionResult PaymentConfirmation(string licensePlate, string? successMessage)
+        {
+            if (string.IsNullOrEmpty(licensePlate))
+            {
+                return BadRequest("License plate is required.");
+            }
+
+            licensePlate = licensePlate?.Trim().ToLower();
+
+            VehicleInGarage vig = _unitOfWork.VehicleInGarageService.FindActiveVehicleInGarage(licensePlate);
+            if (vig == null || vig.Vehicle == null)
+            {
+                return RedirectToAction("PaymentInput", new { licensePlate, errorMessage = "The vehicle has not ben found in Garage." });
+            }
+
+            var payment = _unitOfWork.PaymentService.GetLastPaymentByVehicleInGarageId(vig.VehicleInGarageId);
+            if(payment == null)
+            {
+                return NotFound("Payment not found.");
+            }
+
+            LeaveGarageViewModel lgvm = new LeaveGarageViewModel();
+            lgvm.Vehicle = vig.Vehicle;
+            lgvm.VehicleInGarage = vig;
+            lgvm.Payment = payment;
+            lgvm.Application = vig.Vehicle.Application;
+            lgvm.Owner = lgvm.Application?.Owner;   
+
+            if(string.IsNullOrEmpty(successMessage))
+            {
+                successMessage = "Payment is confirmed!";
+            }
+            ViewBag.SuccessMessage = successMessage;
+
+            return View(lgvm);
         }
     }
 }

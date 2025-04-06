@@ -27,6 +27,8 @@ namespace CarGarageParking.Models
 
         public VehicleInGarage VehicleInGarage { get; set; } = null!;
 
+        public static int TimeToTakeCar { get; set; } = 15;
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!IsPaid)

@@ -12,9 +12,9 @@ namespace CarGarageParking.Models
 
         public Vehicle Vehicle { get; set; }
         [Required]
-        public int GarageId { get; set; }   
+        public int? GarageId { get; set; }   
         
-        public Garage Garage { get; set; }
+        public Garage? Garage { get; set; }
 
         [Required(ErrorMessage = "Entry time is required")]
         [DataType(DataType.DateTime)]

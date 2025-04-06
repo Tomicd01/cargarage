@@ -11,6 +11,7 @@
 .alert {
     width: 50%;
     margin-bottom: 0px !important;
+    transition: opacity 1s ease;
 }
 
 .image {

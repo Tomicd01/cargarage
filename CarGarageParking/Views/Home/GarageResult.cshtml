@@ -2,6 +2,7 @@
 
 <head>
 	<link rel="stylesheet" href="~/css/GarageResult.css" />
+	<script src="~/js/Alert.js"></script>
 	<script src="~/js/Time.js"></script>
 </head>
 
@@ -13,11 +14,11 @@
 
 @if (ViewBag.SuccessMessage != null)
 {
-	<div class="alert alert-success">@ViewBag.SuccessMessage .Garage entered at @DateTime.Now</div>
+	<div id="alert" class="alert alert-success">@ViewBag.SuccessMessage .Garage entered at @DateTime.Now</div>
 }
 @if (ViewBag.ErrorMessage != null)
 {
-	<div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+	<div id="alert" class="alert alert-danger">@ViewBag.ErrorMessage</div>
 }
 
 <div class="garage-list">

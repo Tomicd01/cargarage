@@ -6,6 +6,7 @@ namespace CarGarageParking.Services
     {
         IEnumerable<VehicleInGarage> GetAllVehiclesInGarage();
         VehicleInGarage GetVehicleInGarage(int id);
+        VehicleInGarage? FindActiveVehicleInGarage(string licensePlate);
         void Create(VehicleInGarage vehicleInGarage);
         void Update(VehicleInGarage vehicleInGarage);
         void Delete(int id);
