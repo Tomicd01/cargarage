@@ -65,6 +65,7 @@ namespace CarGarageParking.Services
         public void Update(VehicleInGarage vehicleInGarage)
         {
             _context.VehicleInGarages.Update(vehicleInGarage);
+            _context.SaveChanges();
         }
     }
 }

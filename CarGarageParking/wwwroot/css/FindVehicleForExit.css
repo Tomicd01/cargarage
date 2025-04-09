@@ -73,7 +73,7 @@ input {
     border: 1px;
 }
 .alert {
-    width: 80% !important;
+    width: 75% !important;
     margin-top: 20px;
     transition: opacity 1s ease;
 }

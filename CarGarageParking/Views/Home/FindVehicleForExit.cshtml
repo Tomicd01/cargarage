@@ -6,12 +6,18 @@
 
 <head>
 	<script src="~/js/Time.js"></script>
+	<script src="~/js/Alert.js"></script>
 	<link rel="stylesheet" href="~/css/FindVehicleForExit.css" />
 </head>
 
+@if (ViewBag.ErrorMessage != null)
+{
+	<div id="alert" class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
 <div class="exit-garage">
 	<h1>Leave a Garage</h1>
-	<h3>Current time: <span id="currentTime"></span></h3>
+	<h3 class="mt-2">Current time: <span id="currentTime"></span></h3>
+
 	<form asp-action="FindVehicleForExit" asp-controller="Home" method="post">
 		<div class="form-group">
 			<input type="text" asp-for="VehicleInGarage.Vehicle.LicensePlate" placeholder="Enter License plate" class="form-control" required />

@@ -10,12 +10,37 @@
 	<link rel="stylesheet" href="~/css/FindVehicleForExit.css" />
 </head>
 
+@if (ViewBag.SuccessMessage != null)
+{
+	<div id="alert" class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
 <div class="exit-garage">
 	<h1 class="text-success">Confirm payment</h1>
 	<h3>Current time: <span id="currentTime"></span></h3>
-	@if (ViewBag.SuccessMessage != null)
+
+	@if(Model.Application != null)
 	{
-		<div id="alert" class="alert alert-success">@ViewBag.SuccessMessage</div>
+		@if(Model.Vehicle.Application.Owner != null)
+		{
+			var applicationViewModel = new CarGarageParking.Models.ViewModel.ApplicationRegistrationViewModel()
+			{
+				Owner = Model.Application.Owner,
+				NumberOfVehicles = Model.VehicleInGarage.Vehicle != null ? 1 : 0,
+				Vehicles = new List<Vehicle>{ Model.VehicleInGarage.Vehicle }
+			};
+			<div>
+				<div class="basic-card">
+					@await Html.PartialAsync("_OwnerBasicCard", Model, new ViewDataDictionary(ViewData) { { "ShowLink", false }, { "HasList", true } })
+				</div>
+				@if(Model.Application?.HasActiveMembership == true){
+					<p>Membership discount: <strong>10%</strong></p>
+				}
+			</div>
+		}else{
+			<p class="text-danger">Owner information is not available.</p>
+		}
+	}else{
+		<p class="text-danger">Application is not linked to this Vehicle. Owner does not exist! </p>
 	}
 
 	@await Html.PartialAsync("_GarageHalfCard", Model.VehicleInGarage.Garage)
@@ -32,10 +57,10 @@
 			<li class="list-group-item"><p class="text-warning">Payment time: <strong>@Model.Payment.PaymentTime</strong></p></li>
 			<li class="list-group-item"><p class="text-danger">Expiration time: <strong>@Model.Payment.ExpirationTime</strong></p></li>
 		</ul>
+		<h3>Time to exit: <span id="timeLeft"></span></h3>
 	}else{
 		<p class="text-danger">No Payment found for this Vehicle. Please proceed to payment.</p>
 	}
-	<h3>Time to exit: <span id="timeLeft" data-expiration="@Model.Payment.ExpirationTime.ToString("yyyy-MM-ddTHH:mm:ss")"></span></h3>
 	<form asp-action="PaymentConfirmation" asp-controller="Home" method="post">
 		<input type="hidden" name="licensePlate" value="@Model.VehicleInGarage.Vehicle.LicensePlate" />
 

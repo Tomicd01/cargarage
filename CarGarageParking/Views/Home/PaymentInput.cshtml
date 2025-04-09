@@ -9,14 +9,13 @@
 	<script src="~/js/Alert.js"></script>
 	<link rel="stylesheet" href="~/css/FindVehicleForExit.css" />
 </head>
-
+@if (ViewBag.ErrorMessage != null)
+{
+	<div id="alert" class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
 <div class="exit-garage">
 	<h1>Enter payment</h1>
 	<h3>Current time: <span id="currentTime"></span></h3>
-	@if (ViewBag.ErrorMessage != null)
-	{
-		<div id="alert" class="alert alert-danger">@ViewBag.ErrorMessage</div>
-	}
 
 	<ul class="list-group list-group-flush">
 		<li class="list-group-item"><p>License plate: <strong>@Model.VehicleInGarage.Vehicle.LicensePlate</strong></p></li>

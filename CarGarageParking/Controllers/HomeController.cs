@@ -345,7 +345,7 @@ namespace CarGarageParking.Controllers
 
             if(vig == null)
             {
-                ModelState.AddModelError("", "There is no Vehicle in garage!");
+                ViewBag.ErrorMessage = $"There is no Vehicle with license plate: {model.VehicleInGarage.Vehicle.LicensePlate} in garages!";
                 return View(model);
             }
 
@@ -533,6 +533,56 @@ namespace CarGarageParking.Controllers
             ViewBag.SuccessMessage = successMessage;
 
             return View(lgvm);
+        }
+
+        [HttpPost]
+        public IActionResult PaymentConfirmation(string licensePlate)
+        {
+            if (string.IsNullOrEmpty(licensePlate))
+            {
+                return BadRequest("License plate is required.");
+            }
+            licensePlate = licensePlate?.Trim().ToLower();
+
+            VehicleInGarage vig = _unitOfWork.VehicleInGarageService.FindActiveVehicleInGarage(licensePlate);
+            if (vig == null || vig.Vehicle == null)
+            {
+                return RedirectToAction("PaymentInput", new { licensePlate, errorMessage = "The vehicle has not been found in Garage." });
+            }
+            var payment = _unitOfWork.PaymentService.GetLastPaymentByVehicleInGarageId(vig.VehicleInGarageId);
+            if (payment == null || !payment.IsPaid)
+            {
+                return RedirectToAction("PaymentInput", new { licensePlate, errorMessage = "Payment not found." });
+            }
+
+            if(DateTime.Now > payment.ExpirationTime)
+            {
+                vig.EntryTime = payment.ExpirationTime;
+                vig.IsVehicleStillInGarage = true;
+
+                _unitOfWork.VehicleInGarageService.Update(vig);
+                return RedirectToAction("PaymentInput", new { licensePlate, errorMessage = "You have exceeded time to leave a garage." });
+            }
+
+            vig.IsVehicleStillInGarage = false;
+            vig.ExitTime = DateTime.Now;
+            vig.Garage.CurrentOccupancy--;
+            _unitOfWork.VehicleInGarageService.Update(vig);
+
+            return RedirectToAction("ConfirmationExitVehicle", "Home", new { licensePlate = vig.Vehicle.LicensePlate, entryTime = vig.EntryTime, exitTime = vig.ExitTime, garageName = vig.Garage.Name, currentOccupancy = vig.Garage.CurrentOccupancy });
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmationExitVehicle(string licensePlate, DateTime entryTime, DateTime exitTime, int currentOccupancy, string garageName)
+        {
+            ViewBag.LicensePlate = licensePlate;    
+            ViewBag.EntryTime = entryTime;
+            ViewBag.ExitTime = exitTime;
+            ViewBag.CurrentOccupancy = currentOccupancy;
+            ViewBag.GarageName = garageName;
+            ViewBag.Message = "Vehicle successfully exited the garage!";
+
+            return View();
         }
     }
 }

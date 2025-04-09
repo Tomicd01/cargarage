@@ -1,0 +1,23 @@
+﻿@{
+	ViewData["Title"] = "You left the garage!";
+}
+
+<head>
+	<script src="~/js/Time.js"></script>
+	<script src="~/js/Alert.js"></script>
+	<link rel="stylesheet" href="~/css/FindVehicleForExit.css" />
+</head>
+
+@if (ViewBag.Message != null)
+{
+	<div id="alert" class="alert alert-success">@ViewBag.Message</div>
+}
+
+<div class="exit-garage">
+	<h1 class="text-success">Successfully left the garage!</h1>
+	<p>Garage name: <strong>@ViewBag.GarageName</strong></p>
+	<p>Garage entered at: <strong>@ViewBag.EntryTime</strong></p>
+	<p>Garage left at: <strong>@ViewBag.ExitTime</strong></p>
+	<p>Vehicles currently in garage: <strong>@ViewBag.CurrentOccupancy</strong></p>
+	<a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg">Back to Home</a>
+</div>
