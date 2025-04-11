@@ -7,9 +7,17 @@
     padding: 30px;
     border-radius: 20px;
 }
-
+.card-contain {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .basic-card {
-    width: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 form {

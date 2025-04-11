@@ -17,11 +17,11 @@
 	{
 		if (Model.CurrentPage == i)
 		{
-			<a href="@Url.Action("Index", "Garage", new { page = i })" class="btn btn-outline-light disabled">@i</a>
+			<a href="@Url.Action("Index", "Owner", new { page = i })" class="btn btn-outline-light disabled">@i</a>
 		}
 		else
 		{
-			<a href="@Url.Action("Index", "Garage", new { page = i })" class="btn btn-outline-light">@i</a>
+			<a href="@Url.Action("Index", "Owner", new { page = i })" class="btn btn-outline-light">@i</a>
 		}
 
 	}

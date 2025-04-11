@@ -5,15 +5,15 @@
 }
 
 <head>
+	<script src="~/js/Alert.js"></script>
 	<link rel="stylesheet" href="~/css/RegisterUserCard.css" />
 </head>
+@if (ViewBag.SuccessMessage != null)
+{
+	<div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
 
 <div class="register-user">
-	@if (ViewBag.SuccessMessage != null)
-	{
-		<div class="alert alert-success">@ViewBag.SuccessMessage</div>
-	}
-
 	<h1 class="text-success">Registration successful!</h1>
 	<p>Your registration has been completed</p>
 

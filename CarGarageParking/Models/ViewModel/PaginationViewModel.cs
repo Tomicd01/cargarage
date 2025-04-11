@@ -10,6 +10,8 @@
 
         public int PageSize { get; set; }
 
+        public IEnumerable<ApplicationRegistrationViewModel>? arvm { get; set; }
+
         public int TotalPages
         {
             get

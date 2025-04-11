@@ -6,21 +6,29 @@
 
 <head>
 	<link rel="stylesheet" href="~/css/GarageResult.css"/>
+	<link rel="stylesheet" href="~/css/FilterDropdown.css"/>
 </head>
 
-<form asp-controller="Garage" asp-action="Index" method="get">
-	<label for="Name">Name: </label>
-	<input type="text" name="Name" id="Name" value="@Context.Request.Query["Name"]" />
+<div class="filter">
+	<div class="dropdown">
+		<button type="button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+			<i class="bi bi-filter text-white"></i>
+		</button>
+		<form asp-controller="Garage" asp-action="Index" method="get" class="dropdown-menu ">
+			<div class="form-group">
+				<input type="text" class="form-control mt-1" name="Name" id="Name" value="@Context.Request.Query["Name"]" placeholder="Enter Name" />
+				<input type="text" class="form-control mt-1" name="Location" id="Location" value="@Context.Request.Query["Location"]" placeholder="Enter Location" />
+				<input type="number" class="form-control mt-1" step="1" min="0" name="AvailableSpots" id="AvailableSpots" value="@Context.Request.Query["AvailableSpots"]" placeholder="How many spots you need?" />
+			</div>
 
-	<label for="Location">Location: </label>
-	<input type="text" name="Location" id="Location" value="@Context.Request.Query["Location"]" />
-
-	<label for="AvailableSpots">Sort by spots available: </label>
-	<input type="number" step="1" min="0" name="AvailableSpots" id="AvailableSpots" value="@Context.Request.Query["AvailableSpots"]" />
-
-	<button type="submit" class="btn btn-primary">Search</button>
-	<a href="@Url.Action("Index", "Garage")" class="btn btn-secondary">Clear</a>
-</form>
+			<div class="buttons mt-3">
+				<button type="submit" class="btn btn-primary">Search</button>
+				<a href="@Url.Action("Index", "Garage")" class="btn btn-secondary">Clear</a>
+			</div>
+		</form>
+	</div>
+	<h4 class="text-white ms-2"><strong>Click here to filter garages </strong></h4>
+</div>
 
 
 <div class="garage-list">

@@ -7,5 +7,6 @@
         public bool HasPrevious { get;  }
         public bool HasNext { get; } 
         public IEnumerable<T> Colection { get; set; }
+        public IEnumerable<ApplicationRegistrationViewModel>? arvm { get; set; }
     }
 }

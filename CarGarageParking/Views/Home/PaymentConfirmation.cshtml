@@ -28,9 +28,9 @@
 				NumberOfVehicles = Model.VehicleInGarage.Vehicle != null ? 1 : 0,
 				Vehicles = new List<Vehicle>{ Model.VehicleInGarage.Vehicle }
 			};
-			<div>
-				<div class="basic-card">
-					@await Html.PartialAsync("_OwnerBasicCard", Model, new ViewDataDictionary(ViewData) { { "ShowLink", false }, { "HasList", true } })
+			<div class="card-contain" style="width: 80%;display: flex;flex-direction: column;align-items: center;">
+				<div class="basic-card" style="width: 100%;display: flex;flex-direction: column;align-items: center;">
+					@await Html.PartialAsync("_OwnerBasicCard", applicationViewModel, new ViewDataDictionary(ViewData) { { "ShowLink", false }, { "HasList", true } })
 				</div>
 				@if(Model.Application?.HasActiveMembership == true){
 					<p>Membership discount: <strong>10%</strong></p>

@@ -26,7 +26,7 @@ namespace CarGarageParking.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index(string firstName, string lastName, int? numberOfCars)
+        public IActionResult Index(string firstName, string lastName, int? numberOfCars, int page = 1)
         {
             var owners = _unitOfWork.OwnerService.GetAllOwnersWithVehicles();
 
@@ -43,16 +43,26 @@ namespace CarGarageParking.Controllers
                 owners = owners.Where(o => o.Vehicles.Count() == numberOfCars);
             }
 
+            int pageSize = 2;
+
             var app = owners.Select(o => new ApplicationRegistrationViewModel()
             {
                 Owner = o,
                 NumberOfVehicles = o.Vehicles.Count(),
                 Vehicles = o.Vehicles.ToList()
-            }).ToList();
+            }).ToList().Skip(pageSize * (page - 1)).Take(pageSize);
 
             PaginationViewModel<Owner> pgvm = new PaginationViewModel<Owner>();
+            pgvm.PageSize = pageSize;
+            pgvm.TotalCount = owners.Count();
+            pgvm.CurrentPage = page;
 
-            return View(app);
+            owners = owners.Skip(pageSize * (page - 1)).Take(pageSize);
+            pgvm.Colection = owners;
+            pgvm.arvm = app;
+
+
+            return View(pgvm);
 
         }
 

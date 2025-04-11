@@ -1,0 +1,42 @@
+﻿.filter{
+    display: flex;
+    width: 70%;
+    justify-content: flex-start;
+    align-items: center;
+}
+.dropdown-menu {
+    background-color: #1C1661;
+    padding: 15px;
+    width: 250px;
+}
+.dropdown-toggle {
+    background-color: #1C1661;
+    width: 100px;
+    font-size: 2rem;
+    border: none;
+    border-radius: 15px;
+}
+.dropdown-toggle::after {
+    color: white;
+}
+
+.form-control {
+    background-color: transparent !important;
+    width: 100%;
+    max-width: 350px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+    color: white !important;
+}
+
+.form-control:focus {
+    outline: none;
+    background-color: transparent;
+    box-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
+}
+
+.form-control::placeholder {
+    color: darkgray;
+}

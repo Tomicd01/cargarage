@@ -82,7 +82,8 @@ namespace CarGarageParking.Controllers
         public IActionResult ConfirmVehicleEntry(int garageId, string licensePlate)
         {
             var existingVehicle = _unitOfWork.VehicleInGarageService.GetAllVehiclesInGarage().FirstOrDefault(v => v.Vehicle.LicensePlate == licensePlate && v.IsVehicleStillInGarage);
-            
+            var doesItExist = _unitOfWork.VehicleService.GetAllVehicles().FirstOrDefault(v => v.LicensePlate.ToLower() == licensePlate.ToLower());
+
             if (existingVehicle != null)
             {
                 ViewBag.ErrorMessage = "Vehicle is already in the garage!";
@@ -115,22 +116,38 @@ namespace CarGarageParking.Controllers
 
                 return View("GarageResult", pgvm);
             }
-            VehicleInGarage vig = new VehicleInGarage
+            if(doesItExist != null)
             {
-                GarageId = garageId,
-                Vehicle = new Vehicle()
+                VehicleInGarage vig = new VehicleInGarage
                 {
-                    LicensePlate = licensePlate,
-                },
-                EntryTime = DateTime.Now,
-                HourlyRate = 25,
-            };
-
-            garage.LastEntryTime = DateTime.Now;
-            garage.CurrentOccupancy++;
-            _unitOfWork.VehicleInGarageService.Create(vig);
-
-            ViewBag.SuccessMessage = $"Vehicle with license plate number: {licensePlate}, successfully entered the garage {garage.Name}!";
+                    GarageId = garageId,
+                    Vehicle = doesItExist,
+                    EntryTime = DateTime.Now,
+                    HourlyRate = 25,
+                };
+                garage.LastEntryTime = DateTime.Now;
+                garage.CurrentOccupancy++;
+                _unitOfWork.VehicleInGarageService.Create(vig);
+                ViewBag.SuccessMessage = $"Vehicle with license plate number: {licensePlate}, successfully entered the garage {garage.Name}!";
+            }
+            else
+            {
+                VehicleInGarage vig = new VehicleInGarage
+                {
+                    GarageId = garageId,
+                    Vehicle = new Vehicle()
+                    {
+                        LicensePlate = licensePlate,
+                    },
+                    EntryTime = DateTime.Now,
+                    HourlyRate = 25,
+                };
+                garage.LastEntryTime = DateTime.Now;
+                garage.CurrentOccupancy++;
+                _unitOfWork.VehicleInGarageService.Create(vig);
+                ViewBag.SuccessMessage = $"Vehicle with license plate number: {licensePlate}, successfully entered the garage {garage.Name}!";
+            }
+          
             var garagesAfterEntry = _unitOfWork.GarageService.GetAllgarages();
 
             var pgvmFinal = new PaginationViewModel<Garage>
@@ -261,7 +278,8 @@ namespace CarGarageParking.Controllers
                 Owner = new Owner
                 {
                     FirstName = firstName,
-                    LastName = lastName
+                    LastName = lastName,
+                    Vehicles = licensePlates.Split(",").Select(lp => new Vehicle { LicensePlate = lp }).ToList()
                 },
                 NumberOfVehicles = numberOfVehicles,
                 Vehicles = licensePlates.Split(",").Select(lp => new Vehicle { LicensePlate = lp }).ToList()
@@ -276,6 +294,12 @@ namespace CarGarageParking.Controllers
             if (!ModelState.IsValid)
             {
                 return View("ConfirmApplication", model);
+            }
+
+            // Ako Owner.Vehicles nije popunjen
+            if (model.Owner.Vehicles == null || !model.Owner.Vehicles.Any())
+            {
+                model.Owner.Vehicles = model.Vehicles;
             }
 
             Application application = new Application()
@@ -404,6 +428,7 @@ namespace CarGarageParking.Controllers
 
             VehicleInGarage vig = _unitOfWork.VehicleInGarageService.FindActiveVehicleInGarage(licensePlate);
 
+            
             Application application = vig.Vehicle.Application;
 
             var hourlyrate = vig.HourlyRate;
