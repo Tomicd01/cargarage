@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    var ulClass = "navbar-nav d-flex align-items-center";
+    if (!SignInManager.IsSignedIn(User))
+    {
+        ulClass += " login-tab"; // ovde dodaš klasu po želji
+    }
+}
+<ul class="@ulClass">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="bi bi-person-circle"></i> <strong>@UserManager.GetUserName(User)</strong></a>
+    </li>
+    <li class="nav-item">
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="btn btn-danger border-0 m-0 ms-1">Logout <i class="bi bi-box-arrow-left"></i></button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>
+
+<style>
+    #manage{
+        background-color: #1C1661;
+        border-radius: 10px;
+    }
+    #manage:hover{
+        color: #6c757d !important;
+    }
+    .login-tab{
+        background-color: #1C1661;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 10px;
+    }
+    .login-tab:hover{
+        background-color: rgb(2,0,36);
+    }
+    #register:hover {
+        font-weight: bold;
+    }
+
+    #login:hover {
+        font-weight: bold;
+    }
+</style>

@@ -1,6 +1,9 @@
 ﻿using CarGarageParking.Models;
+using CarGarageParking.Models.Utility;
 using CarGarageParking.Models.ViewModel;
 using CarGarageParking.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
@@ -9,11 +12,13 @@ namespace CarGarageParking.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(IUnitOfWork unitOfWork)
+        public HomeController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
         [HttpGet]
         public IActionResult Index()
@@ -162,15 +167,30 @@ namespace CarGarageParking.Controllers
             return View("GarageResult", pgvmFinal);
         }
 
-
+        [Authorize(Roles = SD.Role_User_Owner)]
         [HttpGet]
-        public IActionResult RegisterUser()
+        public async Task<IActionResult> RegisterUser()
         {
-            var model = new ApplicationRegistrationViewModel();
-            model.Owner = new Owner();
-            return View(model);
+            var user = await _userManager.GetUserAsync(User);
+            var appuser = (ApplicationUser)user;
+
+            if (user == null)
+                return Challenge(); // ako korisnik nije ulogovan
+
+            var viewModel = new ApplicationRegistrationViewModel
+            {
+                Owner = new Owner
+                {
+                    FirstName = appuser.FirstName,
+                    LastName = appuser.LastName
+                }
+            };
+
+            return View(viewModel);
         }
 
+
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RegisterUser(ApplicationRegistrationViewModel model)

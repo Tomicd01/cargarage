@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="~/css/Info.css"/>
 </head>
 
-<h2>@Model.Name @Model.Location</h2>
 
 <div class="full">
 	@await Html.PartialAsync("_GarageFullCard", Model)
@@ -15,5 +14,7 @@
 
 <div class="buttons">
 	<a href="@Url.Action("Index", "Garage")" class="btn btn-primary">Return to all garages</a>
-	<a href="@Url.Action("Delete", "Garage", new { id = Model.GarageId})" class="btn btn-danger">Delete garage</a>
+	@if (User.IsInRole(SD.Role_Admin)) {
+		<a href="@Url.Action("Delete", "Garage", new { id = Model.GarageId})" class="btn btn-danger">Delete garage</a>
+	}
 </div>

@@ -20,7 +20,7 @@
     align-items: center;
 }
 
-form {
+.exit-garage form {
     width: 50%;
     display: flex;
     flex-direction: column;

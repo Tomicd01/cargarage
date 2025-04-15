@@ -1,9 +1,11 @@
 ﻿using CarGarageParking.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CarGarageParking
 {
-    public class CarGarageParkingDbContext : DbContext
+    public class CarGarageParkingDbContext : IdentityDbContext<IdentityUser>
     {
         public static ILoggerFactory loggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => 
         { 
@@ -19,9 +21,12 @@ namespace CarGarageParking
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleInGarage> VehicleInGarages { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Garage>()
                 .HasMany(g => g.VehicleInGarages)
                 .WithOne(vg => vg.Garage)

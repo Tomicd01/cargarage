@@ -1,0 +1,35 @@
+﻿.form-control {
+    background-color: transparent;
+    color: white;
+}
+
+.form-control:disabled {
+    background-color: #6c757d;
+}
+
+.form-control:focus {
+    background-color: transparent;
+    color: white;
+}
+.form-control:active{
+    border: none;
+}
+.form-select {
+    background-color: transparent;
+}
+
+.form-select option {
+    color: white;
+    background-color: #1C1661;
+}
+
+.create-garage {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    background-color: #1C1661;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+

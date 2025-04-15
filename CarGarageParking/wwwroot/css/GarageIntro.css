@@ -1,14 +1,12 @@
 ﻿.button-container {
     margin: 20px 0px;
 }
-
-.btn {
+.intro-btn {
     padding: 5px 15px;
     margin: 10px;
     text-decoration: none;
     transform: skew(-20deg);
-}
-
+} 
 span {
     display: inline-block;
     transform: skew(20deg);
@@ -19,6 +17,9 @@ span {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.heading h1{
+    font-size: 3rem;
 }
 
 .content {

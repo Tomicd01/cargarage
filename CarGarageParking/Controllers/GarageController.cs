@@ -1,6 +1,8 @@
 ﻿using CarGarageParking.Models;
+using CarGarageParking.Models.Utility;
 using CarGarageParking.Models.ViewModel;
 using CarGarageParking.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarGarageParking.Controllers
@@ -51,6 +53,7 @@ namespace CarGarageParking.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Create()
         {
             return View();
@@ -58,6 +61,7 @@ namespace CarGarageParking.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Create(Garage garage)
         {
             if (ModelState.IsValid)
@@ -70,6 +74,7 @@ namespace CarGarageParking.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Edit(int id)
         {
             Garage garage = _unitOfWork.GarageService.GetGarageById(id);
@@ -82,6 +87,7 @@ namespace CarGarageParking.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Edit(Garage garage)
         {
             if (ModelState.IsValid)

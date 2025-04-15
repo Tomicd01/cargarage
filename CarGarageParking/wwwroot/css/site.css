@@ -38,6 +38,15 @@ main{
     border: none;
     margin-bottom: 0px !important;
 }
+#navbar .container-fluid .me-auto .nav-item:hover {
+    background-color: #1C1661;
+    font-weight: bold;
+}
+.footer {
+    border-top: 0px !important;
+    background: rgb(2,0,39);
+    border: none;
+}
 
 .container-fluid a {
     color: #d6d6d6 !important;
@@ -47,4 +56,14 @@ main{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.divider-text:before,
+.divider-text:after {
+    color: white;
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #555;
+    margin: auto 0.25rem;
+    box-shadow: 0 -2px;
 }

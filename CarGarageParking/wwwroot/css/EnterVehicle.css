@@ -63,14 +63,17 @@ width: 50%;
 margin-top: 15px;
 }
 
-.btn {
-width: 120px;
+.buttons button,
+.buttons a {
+    
 }
 
 .button {
-margin-right: 5px;
+    margin-right: 5px;
+    width: 120px;
 }
 
 .button2 {
-margin-left: 5px;
+    margin-left: 5px;
+    width: 120px;
 }

@@ -3,50 +3,46 @@
 	ViewData["Title"] = $"{Model.FirstName} {Model.LastName}";
 }
 
-<div class="owner-look">
-	<h1>@Model.FirstName @Model.LastName</h1>
-	<h1>Number of cars: @Model.Vehicles.Count()</h1>
 
-	<ul class="vehicle-solo">
-		@foreach (Vehicle vehicle in Model.Vehicles)
-		{
-			<li>Vehicle: @await Html.PartialAsync("_VehicleCard", vehicle)</li>
-		}
-	</ul>
+<head>
+	<link rel="stylesheet" href="~/css/OwnerBasicCard.css" />
+</head>
 
-	<a href="@Url.Action("Index", "Owner")">Back to index</a>
 
+<div class="card mb-3 w-75">
+	<div class="container">
+		<div class="row">
+			<div class="image"></div>
+			<div class="card-body col-md-6">
+				<h3>Name: @Model.FirstName</h3>
+				<h3>Last name: @Model.LastName</h3>
+				<p class="text-success">Number of cars: @Model.Vehicles.Count()</p>
+				@if (ViewData.ContainsKey("HasList") && (bool)ViewData["HasList"])
+				{
+					<ul class="list-group list-group-flush">
+						@foreach (var car in Model.Vehicles)
+						{
+							<li class="list-group-item text-muted"><strong>license plate: @car.LicensePlate</strong></li>
+						}
+					</ul>
+				}
+
+				@if (ViewData.ContainsKey("ShowLink") && (bool)ViewData["ShowLink"])
+				{
+					<a href="@Url.Action("Details", "Owner", new { id = Model.OwnerId })" class="btn btn-success">More details about cars</a>
+				}
+				<a href="@Url.Action("Index", "Owner")" class="btn btn-primary">Back to index</a>
+			</div>
+			<div class="vhg p-3 col-md-6">
+				<h5 class="text-primary">Owner's vehicles': </h5>
+				<ul class="list-group">
+					@foreach (var vehicle in Model.Vehicles)
+					{
+						<li class="list-group-item text-muted"><strong>License plate: @vehicle.LicensePlate</strong></li>
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>
 
-
-<style>
-	.owner-look {
-		border: 1px solid gray;
-		border-radius: 15px;
-		padding: 10px;
-		margin: 10px;
-		background-color: dodgerblue;
-		color: white;
-	}
-	.owner-look a {
-		color: yellow;
-		text-align: center;
-		text-decoration: none;
-	}
-
-	.owner-look a:hover {
-		color: white;
-		text-align: center;
-	}
-	.vehicle-solo {
-		text-transform: uppercase;
-		text-decoration: none;
-		color: navajowhite;
-		text-align: center;
-	}
-	.vehicle-solo li {
-		margin: 10px;
-		max-width: 200px;
-		text-decoration: none;
-	}
-</style>

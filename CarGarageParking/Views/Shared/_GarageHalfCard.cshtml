@@ -40,6 +40,9 @@
 		@if (ViewData.ContainsKey("ShowLinkGarage") && (bool)ViewData["ShowLinkGarage"])
 		{
 			<a href="@Url.Action("Info", "Garage", new { id = Model.GarageId })" class="btn btn-success">More info</a>
+			@if(User.IsInRole(SD.Role_Admin)){
+				<a href="@Url.Action("Edit", "Garage", new { id = Model.GarageId })" class="btn btn-warning">Edit Garage <i class="bi bi-pencil-square"></i></a>
+			}
 		}
 	</div>
 </div>
