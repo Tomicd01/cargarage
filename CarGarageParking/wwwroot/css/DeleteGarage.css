@@ -1,0 +1,14 @@
+﻿.full {
+    width: 50%;
+    background-color: #1C1661;
+    border: 2px solid #1C1661;
+    border-radius: 20px;
+}
+.list-group-item {
+    background-color: transparent;
+    border: none;
+    color: aliceblue;
+}
+.list-group-item:hover {
+    background-color: #251E75;
+}

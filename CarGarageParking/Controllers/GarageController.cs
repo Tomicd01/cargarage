@@ -100,6 +100,7 @@ namespace CarGarageParking.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Delete(int id)
         {
             Garage garage = _unitOfWork.GarageService.GetGarageById(id);
@@ -113,6 +114,7 @@ namespace CarGarageParking.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult DeleteConfirmed(int GarageId)
         {
             Garage garage = _unitOfWork.GarageService.GetGarageById(GarageId);

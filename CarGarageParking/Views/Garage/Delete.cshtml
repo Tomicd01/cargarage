@@ -3,34 +3,44 @@
 @{
 	ViewData["Title"] = "Delete garage";
 }
+<head>
+	<link rel="stylesheet" href="~/css/DeleteGarage.css"/>
+</head>
 
-<h1>Delete a garage</h1>
+<div class="full">
+	<div class="container">
+		<div class="row">
+			<h1 class="text-center col-12 mt-3">Delete a garage</h1>
+			
+			<div class="col-md-12">
+				<hr class="m-0 mt-3 text-center" />
+				<ul class="list-group">
+					<li class="list-group-item  list-group-item-action text-muted">Garazni broj: @Model.GarageId</li>
+					<li class="list-group-item  list-group-item-action text-primary">Naziv: @Model.Name</li>
+					<li class="list-group-item  list-group-item-action text-muted">Lokacija: @Model.Location</li>
+					<li class="list-group-item  list-group-item-action text-muted">Kapacitet: @Model.Capacity</li>
+					<li class="list-group-item  list-group-item-action text-muted">Broj zauzetih mesta popunjenosti: @Model.CurrentOccupancy</li>
+					<li class="list-group-item  list-group-item-action text-muted">Broj trenutno slobodnih mesta: @Model.AvailableSpots</li>
+					<li class="list-group-item  list-group-item-action text-muted">Procenat popunjenosti: @Math.Ceiling(Model.CurrentOccupancy / (double)Model.Capacity * 100)%</li>
+					@if (Model.IsFull == true)
+					{
+						<li class="list-group-item  list-group-item-action text-danger"><strong>Garaza je puna</strong></li>
+					}
+					else
+					{
+						<li class="list-group-item  list-group-item-action text-success"><strong>Garaza nije puna</strong></li>
+					}
+				</ul>
+			</div>
 
-<div>
-	<ul>
-		<li>Garazni broj: @Model.GarageId</li>
-		<li>Naziv: @Model.Name</li>
-		<li>Lokacija: @Model.Location</li>
-		<li>Kapacitet: @Model.Capacity</li>
-		<li>Broj zauzetih mesta popunjenosti: @Model.CurrentOccupancy</li>
-		<li>Broj trenutno slobodnih mesta: @Model.AvailableSpots</li>
-		<li>Procenat popunjenosti: @Math.Ceiling(Model.CurrentOccupancy / (double)Model.Capacity * 100)%</li>
-		@if (Model.IsFull == true)
-		{
-			<li>Garaza je puna</li>
-		}
-		else
-		{
-			<li>Garaza nije puna</li>
-		}
-	</ul>
+			<form asp-action="DeleteConfirmed" asp-controller="Garage" method="post" class="col-md-12 text-center mt-3 mb-3">
+				<input type="hidden" asp-for="GarageId" />
+
+				<button type="submit" class="btn btn-danger">Delete garage</button>
+				<a href="@Url.Action("Index", "Garage")" class="btn btn-primary">Return to all garages</a>
+			</form>
+		</div>
+	</div>
 </div>
-
-<form asp-action="DeleteConfirmed" asp-controller="Garage" method="post">
-	<input type="hidden" asp-for="GarageId" />
-
-	<button type="submit" class="btn btn-danger">Delete garage</button>
-	<a href="@Url.Action("Index", "Garage")" class="btn btn-primary">Return to all garages</a>
-</form>
 
 
