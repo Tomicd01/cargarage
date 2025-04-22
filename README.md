@@ -1,0 +1,2 @@
+Car Garage Parking is web application made in .NET MVC with Razor View as Frontend. The app provides the user with possibility to find a Garage for his car, enter the Car by entering it's licence plate into the Garage, and when the owner decides to leave a garage, the app prints him a ticket with information about payment. 
+The app also has login and register functionality, which grants access or denies access to some functionalities based on the role which logged in user has. If the user is registered, he can get membership discount of 10% on full payment.
